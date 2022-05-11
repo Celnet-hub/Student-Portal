@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-export default class SignUp extends Component {
+export default class Acad_Admin_SignUp extends Component {
   render() {
     return (
       <form>
-        <h3>Sign Up</h3>
+        <h3>Academic Admin Sign Up</h3>
         <div className="mb-3">
           <label>First name</label>
           <input
@@ -38,7 +38,7 @@ export default class SignUp extends Component {
           </button>
         </div>
         <p className="forgot-password text-right">
-          Already registered <a href="/student/sign-in">sign in?</a>
+          Already registered <a href="/acad_ad/sign-in">sign in?</a>
         </p>
       </form>
     )

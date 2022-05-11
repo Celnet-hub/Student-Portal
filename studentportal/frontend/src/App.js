@@ -1,4 +1,4 @@
-//where the components and routes are 
+//where the components and routes are configured.
 
 import React from 'react'
 import './App.css'
@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Login from './components/login.component'
 import SignUp from './components/signup.component'
 import Landing from './components/landing.component'
+import Acad_Admin_Login from './components/ad_login.component'
+import Acad_Admin_SignUp from './components/ad_signup.component'
 function App() {
   return (
     <Router>
@@ -35,8 +37,15 @@ function App() {
           <div className="auth-inner">
             <Routes>
               <Route exact path="/" element={<Landing />} />
-              <Route path="/sign-in" element={<Login />} />
-              <Route path="/sign-up" element={<SignUp />} />
+
+              <Route path="/student/sign-in" element={<Login />} />
+
+              <Route path="/student/sign-up" element={<SignUp />} />
+
+              <Route path="/acad_ad/sign-in" element={< Acad_Admin_Login />} />
+
+              <Route path="/acad_ad/sign-up" element={<Acad_Admin_SignUp />} />
+              
             </Routes>
           </div>
         </div>

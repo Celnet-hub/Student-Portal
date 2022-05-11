@@ -20,10 +20,10 @@ export default class Landing extends Component {
 						Admin or Student
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-						<a class="dropdown-item" href="#">
+						<a class="dropdown-item" href="/acad_ad/sign-in">
 							ADMIN
 						</a>
-						<a class="dropdown-item" href="/sign-in">
+						<a class="dropdown-item" href="/student/sign-in">
 							STUDENT
 						</a>
 						{/* <a class="dropdown-item" href="#">
