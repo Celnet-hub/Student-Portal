@@ -9,6 +9,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Student
 from .serializers import StudentSerializer
 
+from django.shortcuts import render
+from rest_framework import viewsets
+from django.views import View
+from django.http import HttpResponse, HttpResponseNotFound
+import os
+
 
 #configure view for process POST and GET requests
 @api_view(['GET', 'POST'])
@@ -73,3 +79,16 @@ def student_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 #Next: studentportal/students/urls.py
+
+
+#create a class based view
+# Add this CBV
+class Assets(View):
+    def get(self, _request, filename):
+        path = os.path.join(os.path.dirname(__file__), 'static', filename)
+
+        if os.path.isfile(path):
+            with open(path, 'rb') as file:
+                return HttpResponse(file.read(), content_type='application/javascript')
+        else:
+            return HttpResponseNotFound()
