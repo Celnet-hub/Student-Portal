@@ -148,7 +148,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     #point to static in React build folder
     os.path.join(BASE_DIR, 'build/static'),
-    os.path.join(BASE_DIR, '/app/static'),
+   # os.path.join(BASE_DIR, '/app/static'),
 ]
 
 # Default primary key field type
@@ -164,11 +164,14 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 
-# Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
+
 
 '''
 If you ran the Django application as specified above, you might get an error when working locally because the dj_database_url module wants to log in with SSL. Heroku Postgres requires SSL, but SQLite doesn't need or expect it. Here's how to fix that:'''
 options = DATABASES['default'].get('OPTIONS', {})
 options.pop('sslmode', None)
+
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
