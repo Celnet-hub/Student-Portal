@@ -148,6 +148,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     #point to static in React build folder
     os.path.join(BASE_DIR, 'build/static'),
+    os.path.join(BASE_DIR, '/app/static'),
 ]
 
 # Default primary key field type
