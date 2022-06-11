@@ -10,6 +10,7 @@ import { useStateContext } from '../contexts/ContextProvider';
 const Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } = useStateContext();
 
+  //function that closes the sidebar
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
@@ -24,9 +25,11 @@ const Sidebar = () => {
       {activeMenu && (
         <>
           <div className="flex justify-between items-center">
+            {/* Sidebar Header */}
             <Link to="/" onClick={handleCloseSideBar} className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900">
-              <SiShopware /> <span>Shoppy</span>
+              <SiShopware /> <span>My Portal</span>
             </Link>
+
             <TooltipComponent content="Menu" position="BottomCenter">
               <button
                 type="button"
