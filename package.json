@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "@syncfusion/ej2": "^19.4.48",
     "@syncfusion/ej2-react-calendars": "^19.4.48",
     "@syncfusion/ej2-react-charts": "^19.4.50",
