@@ -54,24 +54,24 @@ export default class Login extends Component {
 
 							<div className="flex items-center justify-between">
 								<div className="flex items-center">
-									<input
+									{/* <input
 										id="remember-me"
 										name="remember-me"
 										type="checkbox"
 										className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-									/>
+									/> */}
 									<label
 										htmlFor="remember-me"
-										className="ml-2 block text-sm text-gray-900"
+										className="m-1 block text-sm text-gray-900 font-bold"
 									>
-										Remember me
+										Note: Default password is your surname in lowercase 
 									</label>
 								</div>
 
 								<div className="text-sm">
 									<a
 										href="#"
-										className="font-medium text-indigo-600 hover:text-indigo-500"
+										className="ml-5 pl-20 flex font-medium text-indigo-600 hover:text-indigo-500"
 									>
 										Forgot your password?
 									</a>
