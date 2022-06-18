@@ -18,7 +18,7 @@ export default class LandingPage extends Component {
 							<p className="mt-2 text-center text-sm text-gray-600">
 							
 								<a
-									href="#"
+									href="/login"
 									className="font-medium text-indigo-600 hover:text-indigo-500"
 								>
 									Please login to continue
