@@ -70,7 +70,7 @@ export default class Login extends Component {
 
 								<div className="text-sm">
 									<a
-										href="#"
+										href="/resetpassword"
 										className="ml-5 pl-20 flex font-medium text-indigo-600 hover:text-indigo-500"
 									>
 										Forgot your password?

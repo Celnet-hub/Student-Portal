@@ -9,7 +9,7 @@ import { useStateContext } from "./contexts/ContextProvider";
 
 //Pages
 import Login from "./pages/login";
-import SignUp from "./pages/signup";
+import ResetPassword from "./pages/ResetPassword";
 import Home from "./pages/Home";
 import LandingPage from "./pages/LandingPage";
 
@@ -42,7 +42,7 @@ const App = () => {
 				<Route path="/login" element={<Login />} />
 
 				{/* Signup */}
-				<Route path="/signup" element={<SignUp />} />
+				<Route path="/resetpassword" element={<ResetPassword />} />
 
 				{/* Dasboard  */}
 				<Route path="home/*" element={<Home />} />
