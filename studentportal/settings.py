@@ -91,19 +91,19 @@ WSGI_APPLICATION = 'studentportal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 '''
 The idea here is to clear the DATABASES variable and then set the 'default' key using the dj_database_url module. This module uses Heroku's DATABASE_URL variable if it's on Heroku, or it uses the DATABASE_URL we set in the .env file if we're working locally.
 
 '''
-DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# DATABASES = {}
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 
@@ -180,3 +180,4 @@ options.pop('sslmode', None)
 # Configure Django App for Heroku.
 import django_heroku
 django_heroku.settings(locals())
+del DATABASES['default']['OPTIONS']['sslmode'] # Remove option from DATABASES
