@@ -1,13 +1,20 @@
 #from django.shortcuts import render
 
 # Create views here.
+from urllib import request
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework import status
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger 
 from .models import Student
-from .serializers import StudentSerializer
+from .serializers import StudentSerializer,MyTokenObtainPairSerializer, RegisterSerializer
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import generics
+
+from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -15,9 +22,9 @@ from django.views import View
 from django.http import HttpResponse, HttpResponseNotFound
 import os
 
-
 #configure view for process POST and GET requests
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def student_list(request):
    
     #get all students
@@ -80,6 +87,29 @@ def student_detail(request, pk):
 
 #Next: studentportal/students/urls.py
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+
+def getRoutes(request):
+    if request.method == 'GET':
+        routes = [
+            '/api/token/',
+            '/api/register/',
+            '/api/token/refresh/'
+        ]
+        return Response(routes)
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def testEndPoint(request):
+    if request.method == 'GET':
+        data = f"Congratulation {request.user}, your API just responded to GET request"
+        return Response({'response': data}, status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        text = request.POST.get('text')
+        data = f'Congratulation your API just responded to POST request with text: {text}'
+        return Response({'response': data}, status=status.HTTP_200_OK)
+    return Response({}, status.HTTP_400_BAD_REQUEST)
 
 #create a class based view
 # Add this CBV
@@ -92,3 +122,11 @@ class Assets(View):
                 return HttpResponse(file.read(), content_type='application/javascript')
         else:
             return HttpResponseNotFound()
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
