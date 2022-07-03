@@ -35,7 +35,7 @@ SECRET_KEY = 'django-insecure-3o#a#12*60@@blo082%-j2w2y=_qx59(v-^11wpdh*e7%m2-0#
 #DEBUG = True
 
 DEBUB = False
-ALLOWED_HOSTS = ['https://lumistudentportal.herokuapp.com/', 'localhost', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['https://lumistudentportal.herokuapp.com/', 'localhost', '127.0.0.1:8000','127.0.0.1:3001']
 
 
 # Application definition
@@ -216,7 +216,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = (
-       'http://localhost:3000',
+       'http://localhost:3001',
 )
 
 

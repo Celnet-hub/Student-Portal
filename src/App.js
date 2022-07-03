@@ -4,6 +4,8 @@ import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
 import "./App.css";
+import PrivateRoute from "./utils/PrivateRoute";
+import { AuthProvider } from "./contexts/AuthContext";
 
 import { useStateContext } from "./contexts/ContextProvider";
 
@@ -35,18 +37,21 @@ const App = () => {
 
 	return (
 		<div className={currentMode === "Dark" ? "dark" : ""}>
+			<AuthProvider>
 			<Routes>
-				{/* Landing page */}
-				<Route path="/" element={<LandingPage />} />
-				{/* Login  */}
-				<Route path="/login" element={<Login />} />
+					{/* <PrivateRoute component={ProtectedPage} path="/protected" exact /> */}
+					{/* Landing page */}
+					<Route path="/" element={<LandingPage />} />
+					{/* Login  */}
+					<Route path="/login" element={<Login />} />
 
-				{/* Signup */}
-				<Route path="/resetpassword" element={<ResetPassword />} />
+					{/* Signup */}
+					<Route path="/resetpassword" element={<ResetPassword />} />
 
-				{/* Dasboard  */}
-				<Route path="home/*" element={<Home />} />
+					{/* Dasboard  */}
+					<Route path="home/*" element={<Home />} />	
 			</Routes>
+			</AuthProvider>
 		</div>
 	);
 };

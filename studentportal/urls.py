@@ -27,8 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^api/students/$', views.student_list),
     re_path(r'^api/students/(?P<pk>[0-9]+)$', views.student_detail),
-    #re_path('*', TemplateView.as_view(template_name='index.html')),
-     path('api/', include("students.urls"))
+    # re_path('/*', TemplateView.as_view(template_name='index.html')),
+    path('api/', include('students.urls')),
 ]
 
 #urlpatterns += student_urlpatterns #adds student_urlpatterns to urlpatterns

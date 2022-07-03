@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 
 import { Button } from '.';
 import { userProfileData } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 import avatar from '../data/avatar.jpg';
+import AuthContext from "../contexts/AuthContext";
+
 
 const UserProfile = () => {
   const { currentColor } = useStateContext();
+  const { user, logoutUser } = useContext(AuthContext);
 
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
@@ -52,13 +55,21 @@ const UserProfile = () => {
         ))}
       </div>
       <div className="mt-5">
-        <Button
+        {/* <Button
           color="white"
           bgColor={currentColor}
           text="Logout"
           borderRadius="10px"
           width="full"
-        />
+          onClick={logoutUser}
+        /> */}
+        {/* Create a button */}
+        {/* Pass the button a color */}
+        <button
+								type="submit"
+								className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                onClick={logoutUser}
+							>Log Out</button>
       </div>
     </div>
 
