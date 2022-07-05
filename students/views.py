@@ -22,9 +22,13 @@ from django.views import View
 from django.http import HttpResponse, HttpResponseNotFound
 import os
 
+def front(request):
+    context = { }
+    return render(request, "index.html", context)
+
 #configure view for process POST and GET requests
 @api_view(['GET', 'POST'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def student_list(request):
    
     #get all students
@@ -58,7 +62,9 @@ def student_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 """@api_view(['GET', 'PUT', 'DELETE']) for a signle student"""
+
 #decorator to process GET, PUT and DELETE requests
 @api_view(['GET', 'PUT', 'DELETE'])
 def student_detail(request, pk):
@@ -88,8 +94,7 @@ def student_detail(request, pk):
 #Next: studentportal/students/urls.py
 
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
-
+@permission_classes([IsAuthenticated])
 def getRoutes(request):
     if request.method == 'GET':
         routes = [
@@ -100,7 +105,7 @@ def getRoutes(request):
         return Response(routes)
 
 @api_view(['GET', 'POST'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def testEndPoint(request):
     if request.method == 'GET':
         data = f"Congratulation {request.user}, your API just responded to GET request"

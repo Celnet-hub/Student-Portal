@@ -32,10 +32,10 @@ if os.path.isfile(dotenv_file):
 SECRET_KEY = 'django-insecure-3o#a#12*60@@blo082%-j2w2y=_qx59(v-^11wpdh*e7%m2-0#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
+DEBUG = True
 
-DEBUB = False
-ALLOWED_HOSTS = ['https://lumistudentportal.herokuapp.com/', 'localhost', '127.0.0.1:8000','127.0.0.1:3001']
+#DEBUB = True
+ALLOWED_HOSTS = ['https://lumistudentportal.herokuapp.com/', 'localhost', '127.0.0.1']
 
 
 # Application definition
