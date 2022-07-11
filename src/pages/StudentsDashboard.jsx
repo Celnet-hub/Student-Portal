@@ -1,26 +1,26 @@
 import React from "react";
-import { BsCurrencyDollar } from 'react-icons/bs';
-import { GoPrimitiveDot } from 'react-icons/go';
-import { IoIosMore } from 'react-icons/io';
-import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-
-import { Stacked, Pie, Button, LineChart, SparkLine } from '../components';
-import { earningData, medicalproBranding, recentTransactions, weeklyStats, dropdownData, SparklineAreaData, ecomPieChartData } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
-import product9 from '../data/product9.jpg';
+import ElizadeUniversity from '../data/Elizade-University logo.png';
 
 
 const StudentsDashboard = () => {
 	const { currentColor, currentMode, state } = useStateContext();
 	return (
-		<div className="mt-24">
-		  {/* Welcome to your student dashboard */}
-		  <div className="flex justify-between items-center">
-			<div className="flex items-center">
-				<p>Welcome</p>
-			</div>
-			</div>
-		</div>
+		<div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-500 to-blue-300">
+					<div className="max-w-md w-full space-y-8">
+						<div>
+							<img
+								className="mx-auto h-24 w-auto"
+								// src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+								src= {ElizadeUniversity}
+								alt="Workflow"
+							/>
+							<h2 className="mt-6 text-center text-5xl font-extrabold text-gray-900">
+								Welcome to the Student Portal
+							</h2>
+						</div>
+					</div>
+				</div>
 	  );
 };
 
