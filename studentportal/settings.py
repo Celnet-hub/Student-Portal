@@ -35,7 +35,7 @@ SECRET_KEY = 'django-insecure-3o#a#12*60@@blo082%-j2w2y=_qx59(v-^11wpdh*e7%m2-0#
 DEBUG = False
 
 #DEBUB = True
-ALLOWED_HOSTS = ['https://lumistudentportal.herokuapp.com/', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['https://lumistudentportal.herokuapp.com/', 'localhost:3001', '127.0.0.1:8000']
 
 
 # Application definition

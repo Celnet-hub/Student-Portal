@@ -33,10 +33,13 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    #create a picklist field for the user to select a role
+    role = serializers.ChoiceField(choices=(('student', 'Student'), ('course_lecturer', 'Course Lecturer'), ('hod', 'HOD'), ('exam_officer', 'Exam Officer'), ('admin', 'Admin'), ('dean', 'Dean'), ('level_adviser', 'Level Adviser')), required=True)
+
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password2')
+        fields = ('username', 'password', 'password2', 'role')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
