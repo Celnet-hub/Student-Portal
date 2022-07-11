@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from .models import Student
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.validators import UniqueValidator
@@ -33,13 +33,19 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
-    #create a picklist field for the user to select a role
-    role = serializers.ChoiceField(choices=(('student', 'Student'), ('course_lecturer', 'Course Lecturer'), ('hod', 'HOD'), ('exam_officer', 'Exam Officer'), ('admin', 'Admin'), ('dean', 'Dean'), ('level_adviser', 'Level Adviser')), required=True)
+    
+    # #create a picklist field for the user to select a group to join from the list of Groups
+
+    # # groups = serializers.PrimaryKeyRelatedField(
+    # #     many=True,
+    # #     queryset=User.groups.all()
+    # # )
+    # groups = serializers.ChoiceField(choices=(('student', 'Student'), ('course_lecturer', 'Course Lecturer'), ('hod', 'HOD'), ('exam_officer', 'Exam Officer'), ('admin', 'Admin'), ('dean', 'Dean'), ('level_adviser', 'Level Adviser')), required=True)
 
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password2', 'role')
+        fields = ('username', 'password', 'password2')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -50,7 +56,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create(
-            username=validated_data['username']
+            username=validated_data['username'],
+            #groups = validated_data['groups']
         )
 
         user.set_password(validated_data['password'])
