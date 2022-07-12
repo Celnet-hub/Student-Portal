@@ -2,7 +2,7 @@ import React from 'react';
 import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
-import { BiColorFill } from 'react-icons/bi';
+import { BiColorFill, BiBookAdd } from 'react-icons/bi';
 import { IoMdContacts } from 'react-icons/io';
 import { RiContactsLine, RiStockLine } from 'react-icons/ri';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
@@ -10,6 +10,7 @@ import { HiOutlineRefresh } from 'react-icons/hi';
 import { TiTick } from 'react-icons/ti';
 import { GiLouvrePyramid } from 'react-icons/gi';
 import { GrLocation } from 'react-icons/gr';
+import { FcInspection,FcGraduationCap } from 'react-icons/fc';
 import avatar from './avatar.jpg';
 import avatar2 from './avatar2.jpg';
 import avatar3 from './avatar3.png';
@@ -22,6 +23,7 @@ import product5 from './product5.jpg';
 import product6 from './product6.jpg';
 import product7 from './product7.jpg';
 import product8 from './product8.jpg';
+import jwt_decode from "jwt-decode";
 
 export const gridOrderImage = (props) => (
   <div>
@@ -469,94 +471,100 @@ export const employeesGrid = [
     textAlign: 'Center' },
 ];
 
-export const links = [
-  {
-    title: 'Dashboard',
-    links: [
-      {
-        name: 'ecommerce',
-        icon: <FiShoppingBag />,
-      },
-    ],
-  },
+//create the student's data
+const items = JSON.parse(localStorage.getItem('authTokens'));
+export const stdlinks = [];
+		if (items) {
+			var decoded = jwt_decode(items.access);
+			if (decoded.is_staff === false) {
+        // append the links to the array
+        stdlinks.push(
+        {
+          title: 'Pages',
+          links: [
+            {
+              name: 'Course Registration',
+              path: 'course-registration',
+              icon: <BiBookAdd />,
+            },
+            {
+              name: 'Results',
+              path: 'results',
+              icon: <FcInspection />,
+            },
+            {
+              name: 'Course Approvals',
+              path: 'course-approvals',
+              icon: <FcGraduationCap />,
+            },
+          ],
+        }, 
+        {
+          title: 'Apps',
+          links: [
+            {
+              name: 'calendar',
+              icon: <AiOutlineCalendar />,
+            },
+            {
+              name: 'kanban',
+              icon: <BsKanban />,
+            },
+            {
+              name: 'editor',
+              icon: <FiEdit />,
+            },
+            {
+              name: 'color-picker',
+              icon: <BiColorFill />,
+            },
+          ],
+        },
+        {
+          title: 'Charts',
+          links: [
+            {
+              name: 'line',
+              icon: <AiOutlineStock />,
+            },
+            {
+              name: 'area',
+              icon: <AiOutlineAreaChart />,
+            },
+      
+            {
+              name: 'bar',
+              icon: <AiOutlineBarChart />,
+            },
+            {
+              name: 'pie',
+              icon: <FiPieChart />,
+            },
+            {
+              name: 'financial',
+              icon: <RiStockLine />,
+            },
+            {
+              name: 'color-mapping',
+              icon: <BsBarChart />,
+            },
+            {
+              name: 'pyramid',
+              icon: <GiLouvrePyramid />,
+            },
+            {
+              name: 'stacked',
+              icon: <AiOutlineBarChart />,
+            },
+          ],
+        })
+      
+          
+      }
+      
+		}
 
-  {
-    title: 'Pages',
-    links: [
-      {
-        name: 'orders',
-        icon: <AiOutlineShoppingCart />,
-      },
-      {
-        name: 'employees',
-        icon: <IoMdContacts />,
-      },
-      {
-        name: 'customers',
-        icon: <RiContactsLine />,
-      },
-    ],
-  },
-  {
-    title: 'Apps',
-    links: [
-      {
-        name: 'calendar',
-        icon: <AiOutlineCalendar />,
-      },
-      {
-        name: 'kanban',
-        icon: <BsKanban />,
-      },
-      {
-        name: 'editor',
-        icon: <FiEdit />,
-      },
-      {
-        name: 'color-picker',
-        icon: <BiColorFill />,
-      },
-    ],
-  },
-  {
-    title: 'Charts',
-    links: [
-      {
-        name: 'line',
-        icon: <AiOutlineStock />,
-      },
-      {
-        name: 'area',
-        icon: <AiOutlineAreaChart />,
-      },
 
-      {
-        name: 'bar',
-        icon: <AiOutlineBarChart />,
-      },
-      {
-        name: 'pie',
-        icon: <FiPieChart />,
-      },
-      {
-        name: 'financial',
-        icon: <RiStockLine />,
-      },
-      {
-        name: 'color-mapping',
-        icon: <BsBarChart />,
-      },
-      {
-        name: 'pyramid',
-        icon: <GiLouvrePyramid />,
-      },
-      {
-        name: 'stacked',
-        icon: <AiOutlineBarChart />,
-      },
-    ],
-  },
-];
 
 export const cartData = [
   {

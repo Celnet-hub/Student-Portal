@@ -2,6 +2,7 @@ import React, { Component, useContext } from "react";
 import { LockClosedIcon } from "@heroicons/react/solid";
 //import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
+import ElizadeUniversity from '../data/Elizade-University logo.png';
 const Login = () => {
 	
 	const { loginUser } = useContext(AuthContext);
@@ -23,15 +24,16 @@ const Login = () => {
 					<div>
 						<img
 							className="mx-auto h-12 w-auto"
-							src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+							// src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+							src= {ElizadeUniversity}
 							alt="Workflow"
 						/>
 						<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
 							Sign in to your account
 						</h2>
-						<div>
-							<LockClosedIcon className="h-25 w-25 text-gray-600" />
-						</div>
+						{/* <div>
+							<LockClosedIcon className="text-gray-600" />
+						</div> */}
 					</div>
 					<form className="mt-8 space-y-6" onSubmit={handleSubmit}>
 						<input type="hidden" name="remember" defaultValue="true" />
