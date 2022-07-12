@@ -81,7 +81,7 @@ const Navbar = () => {
 				icon={<AiOutlineMenu />}
 			/>
 			<div className="flex">
-				<NavButton
+				{/* <NavButton
 					title="Cart"
 					customFunc={() => handleClick("cart")}
 					color={currentColor}
@@ -100,7 +100,8 @@ const Navbar = () => {
 					customFunc={() => handleClick("notification")}
 					color={currentColor}
 					icon={<RiNotification3Line />}
-				/>
+				/> */}
+				
 				<TooltipComponent content="Profile" position="BottomCenter">
 					<div
 						className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
