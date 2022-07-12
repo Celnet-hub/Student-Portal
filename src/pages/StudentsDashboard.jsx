@@ -16,7 +16,7 @@ const StudentsDashboard = () => {
 								alt="Workflow"
 							/>
 							<h2 className="mt-6 text-center text-5xl font-extrabold text-gray-900">
-								Welcome to the Student Portal
+								Welcome to your Dashboard
 							</h2>
 						</div>
 					</div>
