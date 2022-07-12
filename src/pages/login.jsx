@@ -12,7 +12,7 @@ const Login = () => {
 		username.length > 0 && loginUser(username, password);
 	};
 
-	console.log(loginUser);
+	//console.log(loginUser);
 
 	
 

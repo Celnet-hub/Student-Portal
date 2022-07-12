@@ -25,6 +25,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         token['username'] = user.username
         token['email'] = user.email
+        token['first_name'] = user.first_name
+        token['last_name'] = user.last_name
+        #token['groups'] = user.groups
+        token['is_staff'] = user.is_staff
         # ...
         return token
 
@@ -33,7 +37,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
-    
+
     # #create a picklist field for the user to select a group to join from the list of Groups
 
     # # groups = serializers.PrimaryKeyRelatedField(
