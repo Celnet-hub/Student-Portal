@@ -7,8 +7,8 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework import status
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger 
-from .models import Student
-from .serializers import StudentSerializer,MyTokenObtainPairSerializer, RegisterSerializer
+from .models import *
+from .serializers import StudentSerializer,MyTokenObtainPairSerializer, RegisterSerializer, CourseSerializer
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
@@ -30,7 +30,7 @@ def front(request):
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def student_list(request):
-   
+
     #get all students
     if request.method == 'GET':
         data = []
@@ -100,7 +100,7 @@ def getRoutes(request):
         routes = [
             '/api/token/',
             '/api/register/',
-            '/api/token/refresh/'
+            '/api/token/refresh/',
         ]
         return Response(routes)
 
@@ -135,3 +135,17 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
+
+# create a view to allow authenticated users retrive courses if user is student and 400 level
+class CourseView(generics.ListAPIView):
+    serializer_class = CourseSerializer
+    permission_classes = (IsAuthenticated,)
+    def get_queryset(self):
+        if not self.request.user.is_staff:
+            print(self.request.user.student.phone)
+            #return Course.objects.filter(level=self.request.user.student.level)
+            return Course.objects.filter(level=500)
+        else:
+            return Course.objects.all()
+

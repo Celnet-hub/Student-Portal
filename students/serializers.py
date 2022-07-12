@@ -1,7 +1,7 @@
 #this file is used to convert data the JSON API consumable format.
 
 from rest_framework import serializers
-from .models import Student
+from .models import *
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -13,9 +13,16 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
-        #fields = ('first_name', 'last_name', 'email', 'phone', 'reg_no', 'address', 'current_level', 'createdAt')
+        
+        #fields = ('first_name', 'last_name', 'email', 'phone', 'reg_no', 'address', 'current_level', 'createdAt', 'student_faculty', 'student_department')
         # Next is to create the API views
 
+#create a course serlizer class
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = '__all__'
+        
 
 #create a token serializer class if username and password are provided
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -37,6 +44,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
 
     # #create a picklist field for the user to select a group to join from the list of Groups
 
@@ -49,7 +58,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'password2')
+        fields = ('username','first_name','last_name', 'password', 'password2')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -61,7 +70,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create(
             username=validated_data['username'],
-            #groups = validated_data['groups']
+            first_name = validated_data['first_name'],
+            last_name = validated_data['last_name'],
         )
 
         user.set_password(validated_data['password'])
