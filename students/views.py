@@ -143,10 +143,21 @@ class CourseView(generics.ListAPIView):
     #permission_classes = (IsAuthenticated,)
     def get_queryset(self):
         if not self.request.user.is_staff:
-            curent_user_level = self.request.user.student.first()
-            print(curent_user_level)
-            #return Course.objects.filter(level=self.request.user.student.level)
-            return Course.objects.filter(level=500)
+            curent_user_StdModel = self.request.user.student.first()
+            current_level =  curent_user_StdModel._meta.get_field('current_level').value_from_object(curent_user_StdModel)
+            print(current_level)
+            current_semester =  curent_user_StdModel._meta.get_field('current_semester').value_from_object(curent_user_StdModel)
+
+            if current_level == 500:
+                return Course.objects.filter(level=current_level, semester=current_semester)
+            elif current_level == 400:
+                return Course.objects.filter(level=current_level, semester=current_semester)
+            elif current_level == 300:
+                return Course.objects.filter(level=current_level, semester=current_semester)
+            elif current_level == 200:
+                return Course.objects.filter(level=current_level, semester=current_semester)
+            elif current_level == 100:
+                return Course.objects.filter(level=current_level, semester=current_semester)
         else:
             return Course.objects.all()
 

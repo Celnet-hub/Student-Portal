@@ -18,8 +18,8 @@ class Student(models.Model):
     #stdusername = models.CharField('Username', default='first_name', max_length=255, null=False, blank=True)
     #create a field for semester
     SEMESTER_CHOICES = (
-        ('1', '1'),
-        ('2', '2'),)
+        (1, '1'),
+        (2, '2'),)
     current_semester = models.IntegerField(choices=SEMESTER_CHOICES, default=1, blank=False, null=False)
     #create a picklist for current level
     LEVEL_CHOICES = (
