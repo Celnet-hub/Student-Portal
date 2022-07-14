@@ -11,11 +11,24 @@ class Student(models.Model):
     phone = models.CharField(max_length=20)
     reg_no = models.TextField(blank=False, null=False)
     address = models.TextField(blank=True, null=True)
-    current_level = models.IntegerField(blank=False, null=False)
+    #current_level = models.IntegerField(blank=False, null=False)
     createdAt = models.DateTimeField("cCreated At", auto_now_add=True)
     student_faculty = models.ForeignKey('Faculty', on_delete=models.SET_NULL, blank=True, null=True)
     student_department = models.ForeignKey('Department', on_delete=models.SET_NULL, blank=True, null=True)
     #stdusername = models.CharField('Username', default='first_name', max_length=255, null=False, blank=True)
+    #create a field for semester
+    SEMESTER_CHOICES = (
+        ('1', '1'),
+        ('2', '2'),)
+    current_semester = models.IntegerField(choices=SEMESTER_CHOICES, default=1, blank=False, null=False)
+    #create a picklist for current level
+    LEVEL_CHOICES = (
+        (100, '100'),
+        (200, '200'),
+        (300, '300'),
+        (400, '400'),
+        (500, '500'))
+    current_level = models.IntegerField(choices=LEVEL_CHOICES, default=100, blank=False, null=False)
 
     def __str__(self):
         return self.first_name + " " + self.last_name

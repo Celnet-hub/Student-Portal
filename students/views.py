@@ -140,10 +140,11 @@ class RegisterView(generics.CreateAPIView):
 # create a view to allow authenticated users retrive courses if user is student and 400 level
 class CourseView(generics.ListAPIView):
     serializer_class = CourseSerializer
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated,)
     def get_queryset(self):
         if not self.request.user.is_staff:
-            print(self.request.user.student.phone)
+            curent_user_level = self.request.user.student.first()
+            print(curent_user_level)
             #return Course.objects.filter(level=self.request.user.student.level)
             return Course.objects.filter(level=500)
         else:
