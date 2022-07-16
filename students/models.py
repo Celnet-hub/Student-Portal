@@ -13,7 +13,7 @@ class Student(models.Model):
     address = models.TextField(blank=True, null=True)
     #current_level = models.IntegerField(blank=False, null=False)
     createdAt = models.DateTimeField("cCreated At", auto_now_add=True)
-    student_faculty = models.ForeignKey('Faculty', on_delete=models.SET_NULL, blank=True, null=True)
+    student_faculty = models.ForeignKey('Faculty', on_delete=models.SET_NULL,to_field = 'name', blank=True, null=True)
     student_department = models.ForeignKey('Department', on_delete=models.SET_NULL, blank=True, null=True)
     #stdusername = models.CharField('Username', default='first_name', max_length=255, null=False, blank=True)
     #create a field for semester
@@ -43,7 +43,7 @@ class Course(models.Model):
     level = models.IntegerField(blank=False, null=False)
     semester = models.IntegerField(blank=False, null=False)
     credit_unit = models.IntegerField(blank=False, null=False)
-    deparment = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True, blank=True)
+    department = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True, blank=True)
     faculty = models.ForeignKey('Faculty', on_delete=models.SET_NULL, null=True, blank=True)
     courseType = models.CharField(max_length=255)
 
@@ -73,7 +73,7 @@ class Department(models.Model):
     description = models.TextField(blank=True, null=True)
     createdAt = models.DateTimeField("cCreated At", auto_now_add=True)
     faculty = models.ForeignKey('Faculty', on_delete=models.SET_NULL, null=True, blank=True)
-    HOD = models.ForeignKey('Lecturer', on_delete=models.SET_NULL, null=True, blank=True)
+    HOD = models.ForeignKey(Lecturer, on_delete=models.SET_NULL, null=True, blank=True)
     no_of_courses = models.IntegerField(blank=False, null=False)
 
     def __str__(self):
@@ -81,20 +81,20 @@ class Department(models.Model):
 
 # Create Faculties Models
 class Faculty(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     code = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     createdAt = models.DateTimeField("cCreated At", auto_now_add=True)
     no_of_departments = models.IntegerField(blank=False, null=False)
-    dean = models.ForeignKey('Lecturer', on_delete=models.SET_NULL, null=True, blank=True)
+    dean = models.ForeignKey(Lecturer, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
 
 # Create Failed Courses Models
 class FailedCourse(models.Model):
-    student = models.ForeignKey('Student', on_delete=models.SET_NULL, null=True, blank=True)
-    course = models.ForeignKey('Course', on_delete=models.SET_NULL, null=True, blank=True)
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)
     courseType = models.CharField(max_length=255)
     semester = models.IntegerField(blank=False, null=False)
     year = models.IntegerField(blank=False, null=False)

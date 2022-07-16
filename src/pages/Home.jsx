@@ -9,6 +9,8 @@ import StudentsDashboard from '../pages/StudentsDashboard.jsx';
 import CourseReg from '../pages/CourseReg.jsx';
 
 import { useStateContext } from '../contexts/ContextProvider';
+import { AuthProvider } from "../contexts/AuthContext";
+import PrivateRoute from "../utils/PrivateRoute";
 
 
 const Home = () => {
@@ -63,10 +65,10 @@ const Home = () => {
             </div>
             <div>
               {themeSettings && (<ThemeSettings />)}
-
+              
               <Routes>
                 {/* dashboard  */}
-                <Route path="/" element={(<StudentsDashboard />)} />
+                <Route path="/" element={(<StudentsDashboard />)} exact/>
                 <Route path="/ecommerce" element={(<Ecommerce />)} />
                 
                 {/* pages  */}
@@ -90,7 +92,7 @@ const Home = () => {
                 <Route path="/pyramid" element={<Pyramid />} />
                 <Route path="/stacked" element={<Stacked />} />
               </Routes>
-            
+         
             </div>
             <Footer />
           </div>

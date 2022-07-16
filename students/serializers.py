@@ -1,5 +1,6 @@
 #this file is used to convert data the JSON API consumable format.
 
+from unicodedata import name
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth.models import User, Group
@@ -19,8 +20,15 @@ class StudentSerializer(serializers.ModelSerializer):
 
 #create a course serlizer class
 class CourseSerializer(serializers.ModelSerializer):
+    #create a field for the faculty name
+    faculty = serializers.CharField(source='faculty.name')
+    #create a field for the department name
+    department = serializers.CharField(source='department.name')
+    #create a field for the lecturer name
+    lecturer = serializers.CharField(source='lecturer.first_name')
     class Meta:
         model = Course
+
         fields = '__all__'
         
 

@@ -7,9 +7,9 @@ class StudentAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name', 'email', 'phone', 'address', 'createdAt', 'current_level', 'reg_no', 'student_faculty', 'student_department')
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'code', 'description', 'createdAt', 'lecturer', 'level', 'semester', 'credit_unit', 'deparment', 'faculty')
-    list_filter = ('deparment',)
-    search_fields = ('name', 'code', 'description', 'createdAt', 'lecturer', 'level', 'semester', 'credit_unit', 'deparment', 'faculty')
+    list_display = ('name', 'code', 'description', 'createdAt', 'lecturer', 'level', 'semester', 'credit_unit', 'department', 'faculty')
+    list_filter = ('department',)
+    search_fields = ('name', 'code', 'description', 'createdAt', 'lecturer', 'level', 'semester', 'credit_unit', 'department', 'faculty')
 
 class LecturerAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email', 'phone', 'address', 'createdAt', 'lecturer_department', 'lecturer_faculty', 'rank_title')
