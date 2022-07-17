@@ -1,4 +1,4 @@
-#this file is used to convert data the JSON API consumable format.
+#this file is used to convert data into JSON API consumable format.
 
 from unicodedata import name
 from rest_framework import serializers
