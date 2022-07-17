@@ -93,10 +93,12 @@ class Faculty(models.Model):
 
 # Create Failed Courses Models
 class FailedCourse(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True)
-    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL,related_name='failedcourse', null=True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True,related_name='failedcourse', blank=True)
     courseType = models.CharField(max_length=255)
     semester = models.IntegerField(blank=False, null=False)
+    credit_unit = models.ForeignKey(Course, on_delete=models.SET_NULL, related_name='failedcourse_credunit', null=True, blank=True)
+    lecturer = models.ForeignKey(Lecturer, on_delete=models.SET_NULL,related_name='failedcourse', null=True, blank=True)
     year = models.IntegerField(blank=False, null=False)
     createdAt = models.DateTimeField("cCreated At", auto_now_add=True)
 
