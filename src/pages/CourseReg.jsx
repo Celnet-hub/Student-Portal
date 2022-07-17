@@ -29,7 +29,36 @@ axios({
 });
 
 const CourseReg = () => {
-	const toolbarOptions = ["Search", "Edit", 'Delete', 'Update'];
+	const Register = {
+		text: "Register",
+		tooltipText: "Register",
+		prefixIcon: "ej-icon-Add",
+		//type: "Button",
+		click: (args) => {
+			console.log(args.data);
+			alert("Register");
+			// var course = args.data.name;
+			// //var student = args.data.Student;
+			// var url = "/api/courses/";
+			// var data = {
+			// 	Course: course,
+			// 	//Student: student,
+			// };
+			// axios({
+			// 	method: "post",
+			// 	url: url,
+			// 	data: data,
+			// 	headers: {
+			// 		Authorization: `Bearer ${token}`,
+			// 	},
+			// }).then(function (res) {
+			// 	console.log(res);
+			// }).catch(function (err) {
+			// 	console.log(err);
+			// });
+		}
+	}
+	const toolbarOptions = ["Search", "Edit", 'Delete', 'Update', Register];
 	var employeesDatas = "";
 	//get the token from local storage
 
@@ -51,6 +80,54 @@ const CourseReg = () => {
 					pageSettings={{ pageCount: 5 }}
 					editSettings={editing}
 					toolbar={toolbarOptions}
+					//toolbarClick={Register.click}
+				>
+					<ColumnsDirective>
+						<ColumnDirective
+							type="checkbox"
+							allowSorting={false}
+							allowFiltering={false}
+							width="60"
+						/>
+						<ColumnDirective field="name" headerText="Name" width="150" />
+
+						<ColumnDirective
+							field="code"
+							headerText="Courese Code"
+							width="150"
+						/>
+						<ColumnDirective
+							field="lecturer"
+							headerText="Lecturer"
+							width="150"
+						/>
+						<ColumnDirective
+							field="credit_unit"
+							headerText="Credit Unit"
+							width="150"
+						/>
+						<ColumnDirective
+							field="courseType"
+							headerText="Course Type"
+							width="150"
+						/>
+						<ColumnDirective field="status" headerText="Status" width="150" />
+					</ColumnsDirective>
+					<Inject services={[ Page, Edit, Toolbar]} />
+				</GridComponent>
+			</div>
+		<br /><br />
+			<div className="control-section">
+				<Header title="Failed Course(s) To Register" />
+				<GridComponent
+					dataSource={getdata}
+					width="auto"
+					allowPaging
+					allowSorting
+					pageSettings={{ pageCount: 5 }}
+					editSettings={editing}
+					toolbar={toolbarOptions}
+					//toolbarClick={Register.click}
 				>
 					<ColumnsDirective>
 						<ColumnDirective
