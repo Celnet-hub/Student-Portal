@@ -14,10 +14,12 @@ import { Header } from "../components";
 
 const token = JSON.parse(localStorage.getItem("authTokens"))["access"];
 const url = "/api/courses/";
+const failCourseUrl = "/api/failed-course/";
 const axios = require(`axios`);
 console.log(token["access"]);
 //create function to get the data from the server
 var getdata;
+var getFailCourseData;
 axios({
 	method: "get",
 	url: url,
@@ -27,6 +29,19 @@ axios({
 }).then(function (res) {
 	getdata = res.data;
 });
+
+axios({
+	method: "get",
+	url: failCourseUrl,
+	headers: {
+		Authorization: `Bearer ${token}`,
+	},
+}).then(function (res) {
+	getFailCourseData = res.data;
+});
+
+console.log(getFailCourseData);
+console.log(getdata);
 
 const CourseReg = () => {
 	const Register = {
@@ -120,7 +135,7 @@ const CourseReg = () => {
 			<div className="control-section">
 				<Header title="Failed Course(s) To Register" />
 				<GridComponent
-					dataSource={getdata}
+					dataSource={getFailCourseData}
 					width="auto"
 					allowPaging
 					allowSorting
@@ -136,21 +151,16 @@ const CourseReg = () => {
 							allowFiltering={false}
 							width="60"
 						/>
-						<ColumnDirective field="name" headerText="Name" width="150" />
+						<ColumnDirective field="course" headerText="Course" width="150" />
 
 						<ColumnDirective
-							field="code"
-							headerText="Courese Code"
+							field="credit_unit"
+							headerText="Credit Unit"
 							width="150"
 						/>
 						<ColumnDirective
 							field="lecturer"
 							headerText="Lecturer"
-							width="150"
-						/>
-						<ColumnDirective
-							field="credit_unit"
-							headerText="Credit Unit"
 							width="150"
 						/>
 						<ColumnDirective
