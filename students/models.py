@@ -95,9 +95,20 @@ class Faculty(models.Model):
 class FailedCourse(models.Model):
     student = models.ForeignKey(Student, on_delete=models.SET_NULL,related_name='failedcourse', null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True,related_name='failedcourse', blank=True)
-    courseType = models.CharField(max_length=255)
+    EC = 'Elective Course'
+    CC = 'Core Course'
+    CourseType_CHOICES = (
+        (EC, 'Elective Course'),
+        (CC, 'Core Course'))
+    courseType = models.CharField(choices=CourseType_CHOICES, default=EC, max_length=255)
     semester = models.IntegerField(blank=False, null=False)
-    credit_unit = models.ForeignKey(Course, on_delete=models.SET_NULL, related_name='failedcourse_credunit', null=True, blank=True)
+    CHOICES = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'))
+    credit_unit = models.IntegerField(choices=CHOICES, default=1, blank=False, null=False)
     lecturer = models.ForeignKey(Lecturer, on_delete=models.SET_NULL,related_name='failedcourse', null=True, blank=True)
     year = models.IntegerField(blank=False, null=False)
     createdAt = models.DateTimeField("cCreated At", auto_now_add=True)

@@ -30,6 +30,21 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
 
         fields = '__all__'
+
+# create a failed course serializer class
+class FailedCourseSerializer(serializers.ModelSerializer):
+    #create a field for the faculty name
+    student = serializers.CharField(source='student.name')
+    #create a field for the department name
+    department = serializers.CharField(source='course.name')
+    #create a field for the lecturer name
+    lecturer = serializers.CharField(source='lecturer.first_name')
+    #create a field for the credit unit
+    credit_unit = serializers.CharField(source='course.credit_unit')
+    class Meta:
+        model = FailedCourse
+
+        fields = '__all__'
         
 
 #create a token serializer class if username and password are provided
