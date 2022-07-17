@@ -34,13 +34,15 @@ class CourseSerializer(serializers.ModelSerializer):
 # create a failed course serializer class
 class FailedCourseSerializer(serializers.ModelSerializer):
     #create a field for the faculty name
-    student = serializers.CharField(source='student.name')
+    student = serializers.CharField(source='student.user')
     #create a field for the department name
     department = serializers.CharField(source='course.name')
     #create a field for the lecturer name
     lecturer = serializers.CharField(source='lecturer.first_name')
     #create a field for the credit unit
     credit_unit = serializers.CharField(source='course.credit_unit')
+    #create a field for the reg_no
+    reg_no = serializers.CharField(source='student.reg_no')
     class Meta:
         model = FailedCourse
 

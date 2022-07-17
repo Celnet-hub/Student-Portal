@@ -14,4 +14,5 @@ urlpatterns = [
     path('', views.getRoutes),
     path('test/', views.testEndPoint, name='test'),
     path('courses/', views.CourseView.as_view()),
+    path('failed-course/', views.FailedCourseView.as_view()),
 ]

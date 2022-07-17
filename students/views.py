@@ -8,7 +8,7 @@ from rest_framework import status
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger 
 from .models import *
-from .serializers import StudentSerializer,MyTokenObtainPairSerializer, RegisterSerializer, CourseSerializer
+from .serializers import StudentSerializer,MyTokenObtainPairSerializer, RegisterSerializer, CourseSerializer, FailedCourseSerializer
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
@@ -163,3 +163,31 @@ class CourseView(generics.ListAPIView):
         else:
             return Course.objects.all()
 
+
+# create a view to allow authenticated users to retrive failed courses if user is a student
+class FailedCourseView(generics.ListAPIView):
+    serializer_class = FailedCourseSerializer
+    permission_classes = (IsAuthenticated,)
+    def get_queryset(self):
+        if not self.request.user.is_staff:
+            curent_user_StdModel = self.request.user.student.first()
+            current_level =  curent_user_StdModel._meta.get_field('current_level').value_from_object(curent_user_StdModel)
+            student_regNo =  curent_user_StdModel._meta.get_field('reg_no').value_from_object(curent_user_StdModel)
+            print(curent_user_StdModel.get_current_level_display())
+            print(student_regNo)
+            current_semester =  curent_user_StdModel._meta.get_field('current_semester').value_from_object(curent_user_StdModel)
+
+            if current_level == 500:
+                #check failed courses for student name and return them
+                return FailedCourse.objects.filter(year=current_level, semester=current_semester,)
+            elif current_level == 400:
+                return FailedCourse.objects.filter(year=current_level, semester=current_semester, students__in=[self.request.user])
+            elif current_level == 300:
+                return FailedCourse.objects.filter(year=current_level, semester=current_semester, students__in=[self.request.user])
+            elif current_level == 200:
+                return FailedCourse.objects.filter(year=current_level, semester=current_semester, students__in=[self.request.user])
+            elif current_level == 100:
+                return FailedCourse.objects.filter(year=current_level, semester=current_semester, students__in=[self.request.user])
+            else:
+                return FailedCourse.objects.all()
+            

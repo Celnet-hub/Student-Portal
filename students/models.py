@@ -9,7 +9,7 @@ class Student(models.Model):
     last_name = models.CharField("Last name", max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
-    reg_no = models.TextField(blank=False, null=False)
+    reg_no = models.TextField(unique=True, blank=False, null=False)
     address = models.TextField(blank=True, null=True)
     #current_level = models.IntegerField(blank=False, null=False)
     createdAt = models.DateTimeField("cCreated At", auto_now_add=True)
@@ -94,6 +94,7 @@ class Faculty(models.Model):
 # Create Failed Courses Models
 class FailedCourse(models.Model):
     student = models.ForeignKey(Student, on_delete=models.SET_NULL,related_name='failedcourse', null=True, blank=True)
+    reg_no = models.ForeignKey(Student, on_delete=models.SET_NULL,to_field='reg_no', related_name='failedcourse_regNo', null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True,related_name='failedcourse', blank=True)
     EC = 'Elective Course'
     CC = 'Core Course'
