@@ -52,25 +52,7 @@ const CourseReg = () => {
 		click: (args) => {
 			console.log(args.data);
 			alert("Register");
-			// var course = args.data.name;
-			// //var student = args.data.Student;
-			// var url = "/api/courses/";
-			// var data = {
-			// 	Course: course,
-			// 	//Student: student,
-			// };
-			// axios({
-			// 	method: "post",
-			// 	url: url,
-			// 	data: data,
-			// 	headers: {
-			// 		Authorization: `Bearer ${token}`,
-			// 	},
-			// }).then(function (res) {
-			// 	console.log(res);
-			// }).catch(function (err) {
-			// 	console.log(err);
-			// });
+			
 		}
 	}
 	const toolbarOptions = ["Search", "Edit", 'Delete', 'Update', Register];

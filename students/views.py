@@ -179,15 +179,15 @@ class FailedCourseView(generics.ListAPIView):
 
             if current_level == 500:
                 #check failed courses for student name and return them
-                return FailedCourse.objects.filter(year=current_level, semester=current_semester,)
+                return FailedCourse.objects.filter(reg_no=student_regNo, semester=current_semester,)
             elif current_level == 400:
-                return FailedCourse.objects.filter(year=current_level, semester=current_semester, students__in=[self.request.user])
+                return FailedCourse.objects.filter(reg_no=student_regNo, semester=current_semester,)
             elif current_level == 300:
-                return FailedCourse.objects.filter(year=current_level, semester=current_semester, students__in=[self.request.user])
+                return FailedCourse.objects.filter(reg_no=student_regNo, semester=current_semester,)
             elif current_level == 200:
-                return FailedCourse.objects.filter(year=current_level, semester=current_semester, students__in=[self.request.user])
+                return FailedCourse.objects.filter(reg_no=student_regNo, semester=current_semester,)
             elif current_level == 100:
-                return FailedCourse.objects.filter(year=current_level, semester=current_semester, students__in=[self.request.user])
+                return FailedCourse.objects.filter(reg_no=student_regNo, semester=current_semester)
             else:
                 return FailedCourse.objects.all()
             
