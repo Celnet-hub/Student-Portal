@@ -50,7 +50,7 @@ const App = () => {
 
 					{/* Dasboard  */}
 					<Route element= {<PrivateRoute/>}>
-						<Route path="/home" element={<Home />} />
+						<Route path="/home/*" element={<Home />} />
 					</Route>
 						
 			</Routes>
