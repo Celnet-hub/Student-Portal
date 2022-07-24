@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import AuthContext from "../contexts/AuthContext";
 import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
@@ -24,6 +25,16 @@ import product6 from './product6.jpg';
 import product7 from './product7.jpg';
 import product8 from './product8.jpg';
 import jwt_decode from "jwt-decode";
+
+//get autheticated user
+const getUser = () => {
+  const authTokens = localStorage.getItem("authTokens");
+  if (authTokens) {
+    const user = jwt_decode(authTokens.access);
+    return user;
+  }
+  return null;
+}
 
 export const gridOrderImage = (props) => (
   <div>
@@ -472,13 +483,9 @@ export const employeesGrid = [
 ];
 
 //create the student's data
-const items = JSON.parse(localStorage.getItem('authTokens'));
 export const stdlinks = [];
-		if (items) {
-			var decoded = jwt_decode(items.access);
-			if (decoded.is_staff === false) {
-        // append the links to the array
-        stdlinks.push(
+		if (!getUser.is_staff) {
+      stdlinks.push(
         {
           title: 'Pages',
           links: [
@@ -559,9 +566,13 @@ export const stdlinks = [];
         //   ],
         // }
         )
+			// // var decoded = jwt_decode(items.access);
+			// // if (decoded.is_staff === false) {
+      // //   // append the links to the array
+       
       
           
-      }
+      // }
       
 		}
 
