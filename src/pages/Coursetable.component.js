@@ -15,6 +15,7 @@ class SelectTableComponent extends React.Component {
 			List: [],
 			MasterChecked: false,
 			SelectedList: [],
+			isRegistered: false,
 		};
 	}
 
@@ -85,6 +86,7 @@ class SelectTableComponent extends React.Component {
 	getSelectedRows() {
 		this.setState({
 			SelectedList: this.state.List.filter((e) => e.selected),
+			isRegistered: false,
 		});
 
 		//post the selected courses to the server database
@@ -133,8 +135,37 @@ class SelectTableComponent extends React.Component {
 				
 				}
 		})
-			.then(function (res) {
+			.then((res) => {
 				console.log(res);
+				//if status is 201 then change the state to true and unchecked the checkbox
+				if (res.status === 201) {
+					
+
+					//uncheck the checkbox
+					this.setState({
+						MasterChecked: false,
+						SelectedList: [],
+
+					});
+
+					let tempList = this.state.List;
+					console.log(tempList);
+					tempList.map((user) => {
+						if (selectedListIdString.includes(user.id)) {
+							user.selected = false;
+							user.status = true;
+						}
+						return user;
+					});
+					this.setState({
+						List: tempList,
+						isRegistered: true,
+					});
+
+
+					//uncheck the row checkbox after registering the course
+
+				}
 			})
 			.catch(function (err) {
 				console.log(err);
@@ -198,8 +229,19 @@ class SelectTableComponent extends React.Component {
 										<td className="px-6 py-4 whitespace-nowrap">
 											{user.courseType}
 										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											{/* change status if student is register */}
+											{user.status ? (
+												<span className="text-green-500">Registered</span>
+											) :
+											(
+												<span className="text-red-500">Not Registered</span>
+											)
+										}
+										</td>
 									</tr>
 								))}
+								
 							</tbody>
 						</table>
 						<br />
