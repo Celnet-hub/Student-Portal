@@ -162,8 +162,8 @@ class SelectFailedCourse extends React.Component {
         const level = selectedList[0].level;
         // get the selected lecture
         const lecturer = selectedList[0].lecturer;
-		//const selectedListId = selectedList.map((e) => e.id);
-		//const selectedListIdString = selectedListId.join(",");
+		const selectedListId = selectedList.map((e) => e.id);
+		const selectedListIdString = selectedListId.join(",");
 		const url = `/api/v1/failed-courses/`;
 		const token1 = JSON.parse(localStorage.getItem("authTokens"))["access"];
 		axios({
@@ -185,8 +185,34 @@ class SelectFailedCourse extends React.Component {
                     "lecturer" : lecturer,
                 } ,
 		})
-			.then(function (res) {
+			.then((res) => {
 				console.log(res);
+				//if status is 201 then change the state to true and unchecked the checkbox
+				if (res.status === 201) {
+					
+
+					//uncheck the checkbox
+					this.setState({
+						MasterChecked: false,
+						SelectedList: [],
+
+					});
+
+					let tempList = this.state.List;
+					console.log(tempList);
+					tempList.map((user) => {
+						if (selectedListIdString.includes(user.id)) {
+							user.selected = false;
+							user.status = true;
+						}
+						return user;
+					});
+					this.setState({
+						List: tempList,
+						isRegistered: true,
+					});
+
+				}
 			})
 			.catch(function (err) {
 				console.log(err);
@@ -226,6 +252,9 @@ class SelectFailedCourse extends React.Component {
 										Course Type
 									</th>
 									<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+										Level
+									</th>
+									<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 										Status
 									</th>
 								</tr>
@@ -246,13 +275,26 @@ class SelectFailedCourse extends React.Component {
 											{user.course}
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
-											{user.credit_unit}
+											{user.code}
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											{user.credit_unit}
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											{user.courseType}
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											{user.year}
+										</td>
+										<td className="px-6 py-4 whitespace-nowrap">
+											{/* change status if student is register */}
+											{user.status ? (
+												<span className="text-green-500">Registered</span>
+											) :
+											(
+												<span className="text-red-500">Not Registered</span>
+											)
+										}
 										</td>
 									</tr>
 								))}

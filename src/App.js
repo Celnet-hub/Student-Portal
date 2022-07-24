@@ -49,7 +49,10 @@ const App = () => {
 					<Route path="/resetpassword" element={<ResetPassword />} />
 
 					{/* Dasboard  */}
-					<Route path="home/*" element={<Home />} />	
+					<Route element= {<PrivateRoute/>}>
+						<Route path="/home" element={<Home />} />
+					</Route>
+						
 			</Routes>
 			</AuthProvider>
 		</div>

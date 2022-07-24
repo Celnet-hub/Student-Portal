@@ -125,6 +125,7 @@ class FailedCourse(models.Model):
         (500, '500'))
     year = models.IntegerField(choices=LEVEL_CHOICES, default=100,blank=False, null=False)
     createdAt = models.DateTimeField("cCreated At", auto_now_add=True)
+    code = models.CharField(default='', max_length=255)
 
     def __str__(self):
         return self.student.first_name + " " + self.student.last_name + " " + self.course.name

@@ -162,9 +162,6 @@ class SelectTableComponent extends React.Component {
 						isRegistered: true,
 					});
 
-
-					//uncheck the row checkbox after registering the course
-
 				}
 			})
 			.catch(function (err) {
