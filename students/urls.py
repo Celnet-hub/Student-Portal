@@ -1,10 +1,17 @@
-from django.urls import path
+from django.db import router
+from django.urls import path, include, re_path
 
 from . import views
 
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
+
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'reg-courses', views.RegisteredCourseView, basename='registercourse')
+router.register(r'failed-courses', views.FailedCourseRegistrationView, basename='regfailedcourse')
 
 app_name = 'students'
 urlpatterns = [
@@ -15,4 +22,6 @@ urlpatterns = [
     path('test/', views.testEndPoint, name='test'),
     path('courses/', views.CourseView.as_view()),
     path('failed-course/', views.FailedCourseView.as_view()),
+    re_path(r'^v1/', include(router.urls)),
 ]
+

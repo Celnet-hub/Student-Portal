@@ -8,7 +8,7 @@ from rest_framework import status
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger 
 from .models import *
-from .serializers import StudentSerializer,MyTokenObtainPairSerializer, RegisterSerializer, CourseSerializer, FailedCourseSerializer
+from .serializers import StudentSerializer,MyTokenObtainPairSerializer, RegisterSerializer, CourseSerializer, FailedCourseSerializer, CourseRegistrationSerializer, FailedCourseRegistrationSerializer
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
@@ -141,7 +141,7 @@ class RegisterView(generics.CreateAPIView):
 class CourseView(generics.ListAPIView):
     serializer_class = CourseSerializer
     print(serializer_class)
-    permission_classes = (IsAuthenticated,)
+    permission_classes =  (AllowAny,)
     def get_queryset(self):
         if not self.request.user.is_staff:
             curent_user_StdModel = self.request.user.student.first()
@@ -150,7 +150,12 @@ class CourseView(generics.ListAPIView):
             print(current_level)
             current_semester =  curent_user_StdModel._meta.get_field('current_semester').value_from_object(curent_user_StdModel)
 
+            # get current user reg_no
+            reg_no = self.request.user.student.first().reg_no
+            print('This is from course view: ', reg_no)
+
             if current_level == 500:
+                #return a list of courses and reg_no
                 return Course.objects.filter(level=current_level, semester=current_semester)
             elif current_level == 400:
                 return Course.objects.filter(level=current_level, semester=current_semester)
@@ -162,6 +167,7 @@ class CourseView(generics.ListAPIView):
                 return Course.objects.filter(level=current_level, semester=current_semester)
         else:
             return Course.objects.all()
+        return reg_no
 
 
 # create a view to allow authenticated users to retrive failed courses if user is a student
@@ -190,4 +196,34 @@ class FailedCourseView(generics.ListAPIView):
                 return FailedCourse.objects.filter(reg_no=student_regNo, semester=current_semester)
             else:
                 return FailedCourse.objects.all()
-            
+
+
+# create a view to allow authenticated users to post registered 
+class RegisteredCourseView(viewsets.ModelViewSet):
+    serializer_class =  CourseRegistrationSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset =   CourseRegistration.objects.all()
+
+    print(queryset)
+
+    def perform_create(self, serializer):
+        return super().perform_create(serializer)
+    
+    def get_queryset(self):
+        print(self.request.user.student.first())
+        return super().get_queryset().filter(reg_no=self.request.user.student.first().reg_no)
+        
+
+
+# create a view to allow authenticated users to post failed registered courses
+class FailedCourseRegistrationView(viewsets.ModelViewSet):
+    serializer_class =  FailedCourseRegistrationSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset =   FailedCourseRegistration.objects.all() 
+
+    def perform_create(self, serializer):
+        return super().perform_create(serializer)
+    
+    def get_queryset(self):
+        return super().get_queryset().filter(reg_no=self.request.user.student.first().reg_no)
+    

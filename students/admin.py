@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Student, Course, Lecturer, Department, Faculty, FailedCourse
+from .models import Student, Course, Lecturer, Department, Faculty, FailedCourse,CourseRegistration,FailedCourseRegistration
 
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email', 'phone', 'address', 'createdAt', 'current_level', 'reg_no', 'student_faculty', 'student_department')
-    list_filter = ('student_department',)
+    list_filter = ('student_department','reg_no', 'current_level', )
     search_fields = ('first_name', 'last_name', 'email', 'phone', 'address', 'createdAt', 'current_level', 'reg_no', 'student_faculty', 'student_department')
 
 class CourseAdmin(admin.ModelAdmin):
@@ -29,8 +29,19 @@ class FacultyAdmin(admin.ModelAdmin):
 
 class FailedCourseAdmin(admin.ModelAdmin):
     list_display = ('student', 'course', 'semester', 'year')
-    list_filter = ('semester', 'year')
-    search_fields = ('student', 'course', 'semester', 'year')
+    list_filter = ('semester', 'year', 'reg_no')
+    search_fields = ('student', 'course', 'semester', 'year', )
+
+class RegisteredCoursesAdmin(admin.ModelAdmin):
+    list_display = ('student', 'course', 'semester', 'year')
+    list_filter = ('semester', 'year', 'reg_no')
+    search_fields = ('student', 'course', 'semester', 'year', )
+
+class FailedCourseRegistrationAdmin(admin.ModelAdmin):
+    list_display = ('student','reg_no', 'course', 'semester', 'year',)
+    list_filter = ('semester', 'year', 'reg_no')
+    search_fields = ('student', 'course', 'semester', 'year', )
+
 
 # Register your models here.
 admin.site.register(Student, StudentAdmin)
@@ -39,3 +50,5 @@ admin.site.register(Lecturer, LecturerAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Faculty, FacultyAdmin)
 admin.site.register(FailedCourse, FailedCourseAdmin)
+admin.site.register(CourseRegistration, RegisteredCoursesAdmin)
+admin.site.register(FailedCourseRegistration, FailedCourseRegistrationAdmin)

@@ -8,6 +8,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.fields import CurrentUserDefault
 
 #create a serializer class
 class StudentSerializer(serializers.ModelSerializer):
@@ -47,7 +48,54 @@ class FailedCourseSerializer(serializers.ModelSerializer):
         model = FailedCourse
 
         fields = '__all__'
-        
+
+# create a Course registration serializer class
+class CourseRegistrationSerializer(serializers.ModelSerializer):
+    #create a field student name for the student name
+    student = serializers.SlugRelatedField(queryset=Student.objects.all(), slug_field='reg_no',)
+    #create a field for the department name
+    #course = serializers.CharField(source='course.name', read_only=True)
+    course = serializers.SlugRelatedField(queryset=Course.objects.all(), slug_field='name')
+    #create a field for the lecturer name
+    lecturer = serializers.SlugRelatedField(queryset=Lecturer.objects.all(), slug_field='first_name')
+    #create a field for the credit unit
+    class Meta:
+        model = CourseRegistration
+        # read_only_fields = (
+        #     'student',
+        #     'course',
+        #     'lecturer'
+        # )
+        fields = '__all__' 
+    def create(self, validated_data):
+        return CourseRegistration.objects.create(**validated_data) 
+
+# create a FailedCourseRegistration serializer class
+class FailedCourseRegistrationSerializer(serializers.ModelSerializer):
+    #create a field student name for the student name that is an instance of the Student model
+    student = serializers.SlugRelatedField(queryset=Student.objects.all(), slug_field='reg_no',)
+    #student = serializers.StringRelatedField()
+    #create a field for the department name
+    #course = serializers.CharField(source='course.name', read_only=True)
+    course = serializers.SlugRelatedField(queryset=Course.objects.all(), slug_field='name')
+    #create a field for the lecturer name
+    #lecturer = serializers.CharField(source='lecturer.first_name', read_only=True)
+    lecturer = serializers.SlugRelatedField(queryset=Lecturer.objects.all(), slug_field='first_name')
+    #create a field for the credit unit
+    class Meta:
+        model = FailedCourseRegistration
+
+        fields = '__all__' 
+
+    def create(self, validated_data):
+        obj = FailedCourseRegistration(**validated_data)
+        obj.student = Student.objects.get(reg_no=validated_data['reg_no'])
+        print(obj.student)
+        obj.course = Course.objects.get(name=validated_data['course'])
+        #get the lecturer object who is a foreign key in the FailedCourseRegistration model
+        #obj.lecturer = Lecturer.objects.get(first_name=validated_data['lecturer'])
+        obj.save()
+        return obj
 
 #create a token serializer class if username and password are provided
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -61,7 +109,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['last_name'] = user.last_name
         #token['groups'] = user.groups
         token['is_staff'] = user.is_staff
-        # ...
+        #token should return reg_no of the student who is logged in
+        # get student object from the user object
+        student = Student.objects.get(user=user)
+        print(student.reg_no)
+        token['reg_no'] = student.reg_no
+        token['current_level'] = student.current_level
+        token['email'] = student.email
         return token
 
 #RegisterSerializer is basically used to register a user in the database.

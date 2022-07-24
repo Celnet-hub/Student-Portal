@@ -47,7 +47,7 @@ const Navbar = () => {
 		if (items) {
 			var decoded = jwt_decode(items.access);
 			setItems(decoded);
-			console.log(decoded);
+			//console.log(decoded);
 		}
 	}, []);
 	
