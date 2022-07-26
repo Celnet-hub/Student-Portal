@@ -177,7 +177,7 @@ class CourseRegistration(models.Model):
         ('C', 'Cancelled'),
         ('Reg', 'Registered'))
     status = models.CharField(choices=STATUS_CHOICES, default='None', max_length=255)
-    course_student = models.CharField(max_length=255, blank=True, null=True)
+    course_student = models.CharField(max_length=255, blank=True, null=True, default='Enter Course code here')
     
 
     def __str__(self):
