@@ -68,7 +68,10 @@ class CourseRegistrationSerializer(serializers.ModelSerializer):
         # )
         fields = '__all__' 
     def create(self, validated_data):
-        return CourseRegistration.objects.create(**validated_data) 
+        obj = CourseRegistration.objects.create(**validated_data)
+        
+        print(obj)
+        return obj
 
 # create a FailedCourseRegistration serializer class
 class FailedCourseRegistrationSerializer(serializers.ModelSerializer):
@@ -116,6 +119,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['reg_no'] = student.reg_no
         token['current_level'] = student.current_level
         token['email'] = student.email
+        token['semester'] = student.current_semester
+        print(student.current_semester)
         return token
 
 #RegisterSerializer is basically used to register a user in the database.

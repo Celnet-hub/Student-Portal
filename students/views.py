@@ -210,8 +210,15 @@ class RegisteredCourseView(viewsets.ModelViewSet):
         return super().perform_create(serializer)
     
     def get_queryset(self):
-        print(self.request.user.student.first())
-        return super().get_queryset().filter(reg_no=self.request.user.student.first().reg_no)
+        print(self.request.user.student.first().reg_no)
+        #check course registration status for student and reg_no in course registration table
+        
+        if self.request.user.student.first().registration_status == 'NR':
+            current_level = self.request.user.student.first().current_level
+            current_semester = self.request.user.student.first().current_semester
+            reg_no = self.request.user.student.first().reg_no
+            return CourseRegistration.objects.filter(semester=current_semester, year=current_level, status= 'P')
+        return super().get_queryset().filter(reg_no=self.request.user.student.first().reg_no, semester=self.request.user.student.first().current_semester, year=self.request.user.student.first().current_level, status= 'Reg')
         
 
 
@@ -225,5 +232,10 @@ class FailedCourseRegistrationView(viewsets.ModelViewSet):
         return super().perform_create(serializer)
     
     def get_queryset(self):
+        if self.request.user.student.first().has_registered_failed_course:
+            current_level = self.request.user.student.first().current_level
+            current_semester = self.request.user.student.first().current_semester
+            reg_no = self.request.user.student.first().reg_no
+            return FailedCourseRegistration.objects.filter(semester=current_semester, status= 'P', reg_no=reg_no)
         return super().get_queryset().filter(reg_no=self.request.user.student.first().reg_no)
     

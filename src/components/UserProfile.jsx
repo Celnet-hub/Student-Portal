@@ -12,7 +12,7 @@ const UserProfile = () => {
   const { currentColor } = useStateContext();
   const { user, logoutUser } = useContext(AuthContext);
 
-  //console.log(user);
+  console.log(user);
 
   let name = user.first_name + " " + user.last_name;
 
@@ -41,6 +41,7 @@ const UserProfile = () => {
           }   </p>
           <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> {user.email} </p>
           <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> {user.current_level} Level </p>
+          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> Semester: {user.semester} </p>
           <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> Reg_no: {user.reg_no} </p>
         </div>
       </div>

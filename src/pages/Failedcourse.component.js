@@ -52,7 +52,7 @@ class SelectFailedCourse extends React.Component {
 	}
 
 	componentDidMount() {
-		const url = `/api/failed-course/`;
+		const url = `/api/v1/failed-courses/`;
 		const token1 = JSON.parse(localStorage.getItem("authTokens"))["access"];
 		let data = [];
 		axios({
@@ -74,24 +74,6 @@ class SelectFailedCourse extends React.Component {
 			.catch(function (error) {
 				console.log(error);
 			});
-		// axios.get({
-		//     method: "get",
-		//     url: '127.0.0.1:8000/api/failed-course/',
-		//     headers: {
-		//         Authorization: `Bearer ${token}`,
-		//     },
-		// })
-		//   .then(res => {
-		//     const persons = res.data;
-		//     console.log(persons);
-		//     this.setState({
-		//         List: persons,
-		//      });
-		//   })
-		//     .catch(err => {
-		//         console.log(err);
-		//     }
-		//     );
 	}
 
 	// Select/ UnSelect Table rows
@@ -178,7 +160,7 @@ class SelectFailedCourse extends React.Component {
                     "semester": selectedSemester,
                     "credit_unit": credit_unit,
                     "year": level,
-                    "status": 'P',
+                    "status": 'Reg',
                     "course_student": selectedCourse,
                     "student" : selectedRegNo,
                     "course": selectedCourse,
@@ -288,7 +270,7 @@ class SelectFailedCourse extends React.Component {
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											{/* change status if student is register */}
-											{user.status ? (
+											{user.status !== 'P' ? (
 												<span className="text-green-500">Registered</span>
 											) :
 											(
@@ -307,16 +289,16 @@ class SelectFailedCourse extends React.Component {
 						>
 							{/* console.log selected list
                             {this.state.SelectedList.length > 0 ? console.log(this.state.SelectedList) : "No Selected List"} */}
-							Register {this.state.SelectedList.length}
+							Register
 						</button>
-						<div className="row">
+						{/* <div className="row">
 							<b>All Row Items:</b>
 							<code>{JSON.stringify(this.state.List)}</code>
 						</div>
 						<div className="row">
 							<b>Selected Row Items(Click Button To Get):</b>
 							<code>{JSON.stringify(this.state.SelectedList)}</code>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>

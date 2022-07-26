@@ -22,12 +22,13 @@ class SelectTableComponent extends React.Component {
 	
 	componentDidMount() {
 		const url = `/api/courses/`;
+		const url1 = `/api/v1/reg-courses/`;
 		const token1 = JSON.parse(localStorage.getItem("authTokens"))["access"];
 		let data = [];
 		//let tokenData = jwt_decode(token1.access);
 		axios({
 			method: "get",
-			url: url,
+			url: url1,
 			headers: {
 				Authorization: `Bearer ${token1}`,
 			},
@@ -98,7 +99,7 @@ class SelectTableComponent extends React.Component {
 		// get the selected reg_no
 		const reg_no = selectedList[0].reg_no;
 		// get the selected course
-		const course = selectedList[0].name;
+		const course = selectedList[0].course;
 		// get the selected lecture
 		const lecturer = selectedList[0].lecturer;
 		// get the selected course_type
@@ -129,8 +130,8 @@ class SelectTableComponent extends React.Component {
 					"courseType": course_type,
 					"semester": semester,
 					"credit_unit": credit_unit,
-					"year": level,
-					"status": "P",
+					"year": tokenData.current_level,
+					"status": "Reg",
 					"course_student": course
 				
 				}
@@ -218,8 +219,8 @@ class SelectTableComponent extends React.Component {
 												onChange={(e) => this.onItemCheck(e, user)}
 											/>
 										</th>
-										<td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
-										<td className="px-6 py-4 whitespace-nowrap">{user.code}</td>
+										<td className="px-6 py-4 whitespace-nowrap">{user.course}</td>
+										<td className="px-6 py-4 whitespace-nowrap">{user.course_student}</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											{user.credit_unit}
 										</td>
@@ -228,7 +229,7 @@ class SelectTableComponent extends React.Component {
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											{/* change status if student is register */}
-											{user.status ? (
+											{user.status !== 'P' ? (
 												<span className="text-green-500">Registered</span>
 											) :
 											(
@@ -246,16 +247,17 @@ class SelectTableComponent extends React.Component {
 							className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
 							onClick={() => this.getSelectedRows()}
 						>
-							Register {this.state.SelectedList.length}
+							Register
 						</button>
-						<div className="row">
+						<br />
+						{/* <div className="row">
 							<b>All Row Items:</b>
 							<code>{JSON.stringify(this.state.List)}</code>
 						</div>
 						<div className="row">
 							<b>Selected Row Items(Click Button To Get):</b>
 							<code>{JSON.stringify(this.state.SelectedList)}</code>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>

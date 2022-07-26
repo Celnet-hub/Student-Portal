@@ -29,6 +29,18 @@ class Student(models.Model):
         (400, '400'),
         (500, '500'))
     current_level = models.IntegerField(choices=LEVEL_CHOICES, default=100, blank=False, null=False)
+    #create a field for course registration status
+    
+    REGISTRATION_STATUS_CHOICES = (
+        ('Reg', 'Registered'),
+        ('NR', 'Not Registered'),
+        ('Cancelled', 'Cancelled'),
+        ('Completed', 'Completed'),
+       )
+    registration_status = models.CharField(choices=REGISTRATION_STATUS_CHOICES, default='NR', blank=False, null=False, max_length=255)
+
+    has_failed_course = models.BooleanField(default=False)
+    has_registered_failed_course = models.BooleanField(default=False)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -133,7 +145,7 @@ class FailedCourse(models.Model):
 # Create a model for the course registration
 class CourseRegistration(models.Model):
     student = models.ForeignKey(Student, on_delete=models.SET_NULL,related_name='courseregistration', null=True, blank=True)
-    reg_no = models.CharField(max_length=255)
+    reg_no = models.CharField(max_length=255, default='None', blank=True, null=True)
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True,related_name='courseregistration', blank=True)
     EC = 'Elective Course'
     CC = 'Core Course'
@@ -162,9 +174,11 @@ class CourseRegistration(models.Model):
         ('P', 'Pending'),
         ('A', 'Approved'),
         ('R', 'Rejected'),
-        ('C', 'Cancelled'))
-    status = models.CharField(choices=STATUS_CHOICES, default='P', max_length=255)
+        ('C', 'Cancelled'),
+        ('Reg', 'Registered'))
+    status = models.CharField(choices=STATUS_CHOICES, default='None', max_length=255)
     course_student = models.CharField(max_length=255, blank=True, null=True)
+    
 
     def __str__(self):
         # return reg_no,
@@ -203,8 +217,10 @@ class FailedCourseRegistration(models.Model):
         ('P', 'Pending'),
         ('A', 'Approved'),
         ('R', 'Rejected'),
+        ('Reg', 'Registered'),
         ('C', 'Cancelled'))
     status = models.CharField(choices=STATUS_CHOICES, default='P', max_length=255)
+    code = models.CharField(default='', max_length=255)
 
     def __str__(self):
         return self.reg_no
