@@ -144,62 +144,72 @@ class SelectFailedCourse extends React.Component {
         const level = selectedList[0].level;
         // get the selected lecture
         const lecturer = selectedList[0].lecturer;
+
+		//get the selected status
+		const status = selectedList[0].status;
 		const selectedListId = selectedList.map((e) => e.id);
 		const selectedListIdString = selectedListId.join(",");
 		const url = `/api/v1/failed-courses/`;
 		const token1 = JSON.parse(localStorage.getItem("authTokens"))["access"];
-		axios({
-			method: "post",
-			url: url,
-			headers: {
-				Authorization: `Bearer ${token1}`,
-			},
-                data: { 
-                    "reg_no": selectedRegNo,
-                    "courseType": selectedCourseType,
-                    "semester": selectedSemester,
-                    "credit_unit": credit_unit,
-                    "year": level,
-                    "status": 'Reg',
-                    "course_student": selectedCourse,
-                    "student" : selectedRegNo,
-                    "course": selectedCourse,
-                    "lecturer" : lecturer,
-                } ,
-		})
-			.then((res) => {
-				console.log(res);
-				//if status is 201 then change the state to true and unchecked the checkbox
-				if (res.status === 201) {
-					
-					alert("Course Successfully Registered");
-					//uncheck the checkbox
-					this.setState({
-						MasterChecked: false,
-						SelectedList: [],
-
-					});
-
-					let tempList = this.state.List;
-					console.log(tempList);
-					tempList.map((user) => {
-						if (selectedListIdString.includes(user.id)) {
-							user.selected = false;
-							user.status = true;
-						}
-						return user;
-					});
-					this.setState({
-						List: tempList,
-						isRegistered: true,
-					});
-
-				}
+		if (status !== "Reg") {
+			axios({
+				method: "post",
+				url: url,
+				headers: {
+					Authorization: `Bearer ${token1}`,
+				},
+					data: { 
+						"reg_no": selectedRegNo,
+						"courseType": selectedCourseType,
+						"semester": selectedSemester,
+						"credit_unit": credit_unit,
+						"year": level,
+						"status": 'Reg',
+						"course_student": selectedCourse,
+						"student" : selectedRegNo,
+						"course": selectedCourse,
+						"lecturer" : lecturer,
+					} ,
 			})
-			.catch(function (err) {
-				console.log(err);
-				alert("Course Registration Failed");
-			});
+				.then((res) => {
+					console.log(res);
+					//if status is 201 then change the state to true and unchecked the checkbox
+					if (res.status === 201) {
+						
+						alert("Course Successfully Registered");
+						//uncheck the checkbox
+						this.setState({
+							MasterChecked: false,
+							SelectedList: [],
+	
+						});
+	
+						let tempList = this.state.List;
+						console.log(tempList);
+						tempList.map((user) => {
+							if (selectedListIdString.includes(user.id)) {
+								user.selected = false;
+								user.status = true;
+							}
+							return user;
+						});
+						this.setState({
+							List: tempList,
+							isRegistered: true,
+						});
+	
+					}
+				})
+				.catch(function (err) {
+					console.log(err);
+					alert("Course Registration Failed");
+				});
+		}
+
+		else {
+			alert("Course Already Registered");
+		}
+	
 	}
 
 	render() {

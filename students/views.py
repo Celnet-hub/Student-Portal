@@ -236,8 +236,8 @@ class FailedCourseRegistrationView(viewsets.ModelViewSet):
             current_level = self.request.user.student.first().current_level
             current_semester = self.request.user.student.first().current_semester
             reg_no = self.request.user.student.first().reg_no
-            return FailedCourseRegistration.objects.filter(semester=current_semester, status= 'P', reg_no=reg_no)
-        return super().get_queryset().filter(reg_no=self.request.user.student.first().reg_no)
+            return FailedCourseRegistration.objects.filter(semester=current_semester, status= 'Reg', reg_no=reg_no)
+        return FailedCourseRegistration.objects.filter(reg_no=self.request.user.student.first().reg_no, semester=self.request.user.student.first().current_semester, status= 'P')
 
 #create a view to allow authenticated users view results
 class ResultView(viewsets.ModelViewSet):

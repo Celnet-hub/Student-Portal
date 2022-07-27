@@ -108,68 +108,77 @@ class SelectTableComponent extends React.Component {
 		const credit_unit = selectedList[0].credit_unit;
 		// get the selected year 
 		const level = selectedList[0].level;
+		//get the selected status
+		const status = selectedList[0].status;
 		const selectedListId = selectedList.map((e) => e.id);
 		const selectedListIdString = selectedListId.join(",");
 		console.log(selectedListIdString);
-		const url = `/api/v1/reg-courses/`;
-		const token = JSON.parse(localStorage.getItem("authTokens"))["access"];
-		let tokenData = jwt_decode(token);
-		console.log(tokenData);
-		axios({
-			method: "post",
-			url: url,
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-			data: {
-				
-					"student": tokenData.reg_no,
-					"course": course,
-					"lecturer": lecturer,
-					"reg_no": tokenData.reg_no,
-					"courseType": course_type,
-					"semester": semester,
-					"credit_unit": credit_unit,
-					"year": tokenData.current_level,
-					"status": "Reg",
-					"course_student": course
-				
-				}
-		})
-			.then((res) => {
-				console.log(res);
-				//if status is 201 then change the state to true and unchecked the checkbox
-				if (res.status === 201) {
+		if (status !== "Reg") {
+			const url = `/api/v1/reg-courses/`;
+			const token = JSON.parse(localStorage.getItem("authTokens"))["access"];
+			let tokenData = jwt_decode(token);
+			console.log(tokenData);
+			axios({
+				method: "post",
+				url: url,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+				data: {
 					
-					alert("Course Registered Successfully");
-
-					//uncheck the checkbox
-					this.setState({
-						MasterChecked: false,
-						SelectedList: [],
-
-					});
-
-					let tempList = this.state.List;
-					console.log(tempList);
-					tempList.map((user) => {
-						if (selectedListIdString.includes(user.id)) {
-							user.selected = false;
-							user.status = true;
-						}
-						return user;
-					});
-					this.setState({
-						List: tempList,
-						isRegistered: true,
-					});
-
-				}
+						"student": tokenData.reg_no,
+						"course": course,
+						"lecturer": lecturer,
+						"reg_no": tokenData.reg_no,
+						"courseType": course_type,
+						"semester": semester,
+						"credit_unit": credit_unit,
+						"year": tokenData.current_level,
+						"status": "Reg",
+						"course_student": course
+					
+					}
 			})
-			.catch(function (err) {
-				console.log(err);
-				alert("Course Registration Failed Contact Admin");
-			});
+				.then((res) => {
+					console.log(res);
+					//if status is 201 then change the state to true and unchecked the checkbox
+					if (res.status === 201) {
+						
+						alert("Course Registered Successfully");
+	
+						//uncheck the checkbox
+						this.setState({
+							MasterChecked: false,
+							SelectedList: [],
+	
+						});
+	
+						let tempList = this.state.List;
+						console.log(tempList);
+						tempList.map((user) => {
+							if (selectedListIdString.includes(user.id)) {
+								user.selected = false;
+								user.status = true;
+							}
+							return user;
+						});
+						this.setState({
+							List: tempList,
+							isRegistered: true,
+						});
+	
+					}
+				})
+				.catch(function (err) {
+					console.log(err);
+					alert("Course Registration Failed Contact Admin");
+				});
+		}
+
+		else {
+			alert("Course Already Registered");
+		}
+	
 	}
 
 	render() {
