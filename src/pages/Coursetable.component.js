@@ -141,6 +141,7 @@ class SelectTableComponent extends React.Component {
 				//if status is 201 then change the state to true and unchecked the checkbox
 				if (res.status === 201) {
 					
+					alert("Course Registered Successfully");
 
 					//uncheck the checkbox
 					this.setState({
@@ -167,6 +168,7 @@ class SelectTableComponent extends React.Component {
 			})
 			.catch(function (err) {
 				console.log(err);
+				alert("Course Registration Failed Contact Admin");
 			});
 	}
 

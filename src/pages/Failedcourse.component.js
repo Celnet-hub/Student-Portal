@@ -172,7 +172,7 @@ class SelectFailedCourse extends React.Component {
 				//if status is 201 then change the state to true and unchecked the checkbox
 				if (res.status === 201) {
 					
-
+					alert("Course Successfully Registered");
 					//uncheck the checkbox
 					this.setState({
 						MasterChecked: false,
@@ -198,6 +198,7 @@ class SelectFailedCourse extends React.Component {
 			})
 			.catch(function (err) {
 				console.log(err);
+				alert("Course Registration Failed");
 			});
 	}
 
