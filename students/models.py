@@ -48,7 +48,7 @@ class Student(models.Model):
 # Create Courses Models
 class Course(models.Model):
     name = models.CharField(max_length=255)
-    code = models.CharField(max_length=255)
+    code = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
     createdAt = models.DateTimeField("cCreated At", auto_now_add=True)
     lecturer = models.ForeignKey('Lecturer', on_delete=models.SET_NULL, null=True, blank=True)
@@ -224,3 +224,42 @@ class FailedCourseRegistration(models.Model):
 
     def __str__(self):
         return self.reg_no
+
+
+# Create a model for the Student's Result
+class StudentResult(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL,related_name='studentresult', null=True, blank=True)
+    reg_no = models.ForeignKey(Student, on_delete=models.SET_NULL,to_field='reg_no', related_name='studentresult_regNo', null=True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True,related_name='studentresult', blank=True)
+    course_code = models.ForeignKey(Course, on_delete=models.SET_NULL, to_field='code', related_name='studentresult_code', null=True, blank=True)
+    semester = models.IntegerField(blank=False, null=False)
+    CHOICES = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'))
+    credit_unit = models.IntegerField(choices=CHOICES, default=1, blank=False, null=False)
+    score = models.IntegerField(blank=False, null=False)
+    lecturer = models.ForeignKey(Lecturer, on_delete=models.SET_NULL,related_name='studentresult', null=True, blank=True)
+    LEVEL_CHOICES = (
+        (100, '100'),
+        (200, '200'),
+        (300, '300'),
+        (400, '400'),
+        (500, '500'))
+    level = models.IntegerField(choices=LEVEL_CHOICES, default=100,blank=False, null=False)
+    createdAt = models.DateTimeField("cCreated At", auto_now_add=True)
+    # A = 'A'
+    # B = 'B'
+    # C = 'C'
+    # D = 'D'
+    # F = 'F'
+    GRADE_CHOICES = (
+        ('A', 'A'),
+        ('B', 'B'),
+        ('C', 'C'),
+        ('D', 'D'),
+        ('F', 'F'))
+    grade = models.CharField(choices=GRADE_CHOICES,max_length=255)
+    points = models.IntegerField(blank=False, null=False)

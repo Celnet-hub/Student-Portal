@@ -12,6 +12,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'reg-courses', views.RegisteredCourseView, basename='registercourse')
 router.register(r'failed-courses', views.FailedCourseRegistrationView, basename='regfailedcourse')
+router.register(r'result', views.ResultView, basename='results')
 
 app_name = 'students'
 urlpatterns = [

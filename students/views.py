@@ -8,7 +8,7 @@ from rest_framework import status
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger 
 from .models import *
-from .serializers import StudentSerializer,MyTokenObtainPairSerializer, RegisterSerializer, CourseSerializer, FailedCourseSerializer, CourseRegistrationSerializer, FailedCourseRegistrationSerializer
+from .serializers import StudentSerializer,MyTokenObtainPairSerializer, RegisterSerializer, CourseSerializer, FailedCourseSerializer, CourseRegistrationSerializer, FailedCourseRegistrationSerializer, StudentResultSerializer
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
@@ -212,7 +212,7 @@ class RegisteredCourseView(viewsets.ModelViewSet):
     def get_queryset(self):
         print(self.request.user.student.first().reg_no)
         #check course registration status for student and reg_no in course registration table
-        
+
         if self.request.user.student.first().registration_status == 'NR':
             current_level = self.request.user.student.first().current_level
             current_semester = self.request.user.student.first().current_semester
@@ -238,4 +238,28 @@ class FailedCourseRegistrationView(viewsets.ModelViewSet):
             reg_no = self.request.user.student.first().reg_no
             return FailedCourseRegistration.objects.filter(semester=current_semester, status= 'P', reg_no=reg_no)
         return super().get_queryset().filter(reg_no=self.request.user.student.first().reg_no)
-    
+
+#create a view to allow authenticated users view results
+class ResultView(viewsets.ModelViewSet):
+    serializer_class = StudentResultSerializer
+    permission_classes = (IsAuthenticated,)
+    def get_queryset(self):
+        if not self.request.user.is_staff:
+            curent_user_StdModel = self.request.user.student.first()
+            current_level =  curent_user_StdModel._meta.get_field('current_level').value_from_object(curent_user_StdModel)
+            student_regNo =  curent_user_StdModel._meta.get_field('reg_no').value_from_object(curent_user_StdModel)
+            current_semester =  curent_user_StdModel._meta.get_field('current_semester').value_from_object(curent_user_StdModel)
+
+            if current_level == 500:
+                #check failed courses for student name and return them
+                return StudentResult.objects.filter(reg_no=student_regNo, semester=current_semester,)
+            elif current_level == 400:
+                return StudentResult.objects.filter(reg_no=student_regNo, semester=current_semester,)
+            elif current_level == 300:
+                return StudentResult.objects.filter(reg_no=student_regNo, semester=current_semester,)
+            elif current_level == 200:
+                return StudentResult.objects.filter(reg_no=student_regNo, semester=current_semester,)
+            elif current_level == 100:
+                return StudentResult.objects.filter(reg_no=student_regNo, semester=current_semester)
+        else:
+            return StudentResult.objects.all()

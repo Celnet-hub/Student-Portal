@@ -100,6 +100,30 @@ class FailedCourseRegistrationSerializer(serializers.ModelSerializer):
         obj.save()
         return obj
 
+
+# create a serializer class for the student result
+class StudentResultSerializer(serializers.ModelSerializer):
+    #create a field for the student name
+    student = serializers.SlugRelatedField(queryset=Student.objects.all(), slug_field='reg_no',)
+    #create a field for the course name
+    course = serializers.SlugRelatedField(queryset=Course.objects.all(), slug_field='name')
+    #create a field for the lecturer name
+    lecturer = serializers.SlugRelatedField(queryset=Lecturer.objects.all(), slug_field='first_name')
+    course_code = serializers.CharField(source='course.code', )
+    #create a field for the credit unit
+    class Meta:
+        model = StudentResult
+        fields = '__all__' 
+    def create(self, validated_data):
+        obj = StudentResult.objects.create(**validated_data)
+        obj.student = Student.objects.get(reg_no=validated_data['reg_no'])
+        obj.course = Course.objects.get(name=validated_data['course'])
+        obj.lecturer = Lecturer.objects.get(first_name=validated_data['lecturer'])
+        obj.course_code = Course.objects.get(name=validated_data['code'])
+        obj.save()
+        return obj
+
+
 #create a token serializer class if username and password are provided
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod

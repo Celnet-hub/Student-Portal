@@ -4,14 +4,14 @@ import { GridComponent, Inject, ColumnsDirective, ColumnDirective, Search, Page 
 import { employeesData, employeesGrid } from '../data/dummy';
 import { Header } from '../components';
 
-const Employees = () => {
+const Results = () => {
   const toolbarOptions = ['Search'];
 
   const editing = { allowDeleting: true, allowEditing: true };
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header category="Page" title="Employees" />
+      <Header category="Page" title="Student Result" />
       <GridComponent
         dataSource={employeesData}
         width="auto"
@@ -31,4 +31,4 @@ const Employees = () => {
     </div>
   );
 };
-export default Employees;
+export default Results;

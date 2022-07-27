@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Student, Course, Lecturer, Department, Faculty, FailedCourse,CourseRegistration,FailedCourseRegistration
+from .models import Student, Course, Lecturer, Department, Faculty, FailedCourse,CourseRegistration,FailedCourseRegistration, StudentResult
 
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email', 'phone', 'address', 'createdAt', 'current_level', 'reg_no', 'student_faculty', 'student_department')
@@ -42,6 +42,12 @@ class FailedCourseRegistrationAdmin(admin.ModelAdmin):
     list_filter = ('semester', 'year', 'reg_no')
     search_fields = ('student', 'course', 'semester', 'year', )
 
+class StudentResultAdmin(admin.ModelAdmin):
+    list_display = ('student', 'course', 'semester', 'level', 'grade', 'points')
+    list_filter = ('semester', 'level', 'reg_no')
+    search_fields = ('student', 'course', 'semester', 'level', 'grade')
+
+
 
 # Register your models here.
 admin.site.register(Student, StudentAdmin)
@@ -52,3 +58,4 @@ admin.site.register(Faculty, FacultyAdmin)
 admin.site.register(FailedCourse, FailedCourseAdmin)
 admin.site.register(CourseRegistration, RegisteredCoursesAdmin)
 admin.site.register(FailedCourseRegistration, FailedCourseRegistrationAdmin)
+admin.site.register(StudentResult, StudentResultAdmin)

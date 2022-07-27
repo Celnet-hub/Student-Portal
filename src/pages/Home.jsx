@@ -7,6 +7,7 @@ import { Ecommerce, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Li
 
 import StudentsDashboard from '../pages/StudentsDashboard.jsx';
 import CourseReg from '../pages/CourseReg.jsx';
+import StudentResult from './StudentResult';
 
 import { useStateContext } from '../contexts/ContextProvider';
 import { AuthProvider } from "../contexts/AuthContext";
@@ -69,28 +70,11 @@ const Home = () => {
               <Routes>
                 {/* dashboard  */}
                 <Route path="/" element={(<StudentsDashboard />)} exact/>
-                <Route path="/ecommerce" element={(<Ecommerce />)} />
                 
                 {/* pages  */}
                 <Route path="/course-registration" element={<CourseReg />} />
-                <Route path="/results" element={<Employees />} />
+                <Route path="/results" element={<StudentResult />} />
                 <Route path="/course-approvals" element={<Employees />} />
-
-                {/* apps  */}
-                {/* <Route path="/kanban" element={<Kanban />} /> */}
-                <Route path="/editor" element={<Editor />} />
-                <Route path="/calendar" element={<Calendar />} />
-                <Route path="/color-picker" element={<ColorPicker />} />
-
-                {/* charts  */}
-                <Route path="/line" element={<Line />} />
-                <Route path="/area" element={<Area />} />
-                <Route path="/bar" element={<Bar />} />
-                <Route path="/pie" element={<Pie />} />
-                <Route path="/financial" element={<Financial />} />
-                <Route path="/color-mapping" element={<ColorMapping />} />
-                <Route path="/pyramid" element={<Pyramid />} />
-                <Route path="/stacked" element={<Stacked />} />
               </Routes>
          
             </div>
