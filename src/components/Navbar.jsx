@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-import { FiShoppingCart } from "react-icons/fi";
-import { BsChatLeft } from "react-icons/bs";
-import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
-import avatar from "../data/avatar.jpg";
 import ElizadeUniversity from '../data/Elizade-University logo.png';
-import { Cart, Chat, Notification, UserProfile } from ".";
+import { UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
 import jwt_decode from "jwt-decode";
 
@@ -122,9 +118,6 @@ const Navbar = () => {
 					</div>
 				</TooltipComponent>
 
-				{isClicked.cart && <Cart />}
-				{isClicked.chat && <Chat />}
-				{isClicked.notification && <Notification />}
 				{isClicked.userProfile && <UserProfile />}
 			</div>
 		</div>

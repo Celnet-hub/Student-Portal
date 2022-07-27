@@ -1,26 +1,34 @@
 import React from "react";
+import jwt_decode from "jwt-decode";
 const axios = require(`axios`);
 
-class SelectFailedCourse extends React.Component {
-	// Event to get selected rows(Optional)
+
+//create function to get the data from the server
+
+
+// create function to get stored token from local storage
+
+class ApprovedCourse extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			error: null,
-			isLoaded: false,
 			List: [],
 			MasterChecked: false,
 			SelectedList: [],
+			isRegistered: false,
 		};
 	}
 
+	
 	componentDidMount() {
-		const url = `/api/v1/failed-courses/`;
+		//const url = `/api/courses/`;
+		const url1 = `/api/v1/approvals/`;
 		const token1 = JSON.parse(localStorage.getItem("authTokens"))["access"];
 		let data = [];
+		//let tokenData = jwt_decode(token1.access);
 		axios({
 			method: "get",
-			url: url,
+			url: url1,
 			headers: {
 				Authorization: `Bearer ${token1}`,
 			},
@@ -79,67 +87,65 @@ class SelectFailedCourse extends React.Component {
 	getSelectedRows() {
 		this.setState({
 			SelectedList: this.state.List.filter((e) => e.selected),
+			isRegistered: false,
 		});
 
+		//post the selected courses to the server database
 		//make ajax call to server to update the database
-        // get the selected rows
 		const selectedList = this.state.SelectedList;
-        
-        
-        // get the selected semester
-        const selectedSemester = selectedList.map((e) => e.semester).toString();
-        // get the selected reg_no
-        const selectedRegNo = selectedList.map((e) => e.reg_no).toString();
-        // get the selected course name
-        const selectedCourse= selectedList.map((e) => e.course).toString();
-        // get the selected student name
-        //const selectedStudent = selectedList.map((e) => e.student).toString();
-        // get the selected lecturer name
-        const selectedLecturer = selectedList.map((e) => e.lecturer).toString();
-        console.log(selectedLecturer);
-
-        // get the selected course_type
-        const selectedCourseType = selectedList.map((e) => e.courseType).toString();
-
-        // get the selected credit_unit
-        const credit_unit = selectedList[0].credit_unit;
-        // get the selected course_code
-        const level = selectedList[0].level;
-        // get the selected lecture
-        const lecturer = selectedList[0].lecturer;
-
+		// get the selected semester
+		const semester = selectedList[0].semester;
+		console.log(semester);
+		// get the selected reg_no
+		const reg_no = selectedList[0].reg_no;
+		// get the selected course
+		const course = selectedList[0].course;
+		// get the selected lecture
+		const lecturer = selectedList[0].lecturer;
+		// get the selected course_type
+		const course_type = selectedList[0].course_type;
+		// get the selected credit_unit	
+		const credit_unit = selectedList[0].credit_unit;
+		// get the selected year 
+		const level = selectedList[0].level;
 		//get the selected status
 		const status = selectedList[0].status;
 		const selectedListId = selectedList.map((e) => e.id);
 		const selectedListIdString = selectedListId.join(",");
-		const url = `/api/v1/failed-courses/`;
-		const token1 = JSON.parse(localStorage.getItem("authTokens"))["access"];
+		console.log(selectedListIdString);
 		if (status !== "Reg") {
+			const url = `/api/v1/reg-courses/`;
+			const token = JSON.parse(localStorage.getItem("authTokens"))["access"];
+			let tokenData = jwt_decode(token);
+			console.log(tokenData);
 			axios({
 				method: "post",
 				url: url,
 				headers: {
-					Authorization: `Bearer ${token1}`,
+					Authorization: `Bearer ${token}`,
 				},
-					data: { 
-						"reg_no": selectedRegNo,
-						"courseType": selectedCourseType,
-						"semester": selectedSemester,
+				data: {
+					
+						"student": tokenData.reg_no,
+						"course": course,
+						"lecturer": lecturer,
+						"reg_no": tokenData.reg_no,
+						"courseType": course_type,
+						"semester": semester,
 						"credit_unit": credit_unit,
-						"year": level,
-						"status": 'Reg',
-						"course_student": selectedCourse,
-						"student" : selectedRegNo,
-						"course": selectedCourse,
-						"lecturer" : lecturer,
-					} ,
+						"year": tokenData.current_level,
+						"status": "Reg",
+						"course_student": course
+					
+					}
 			})
 				.then((res) => {
 					console.log(res);
 					//if status is 201 then change the state to true and unchecked the checkbox
 					if (res.status === 201) {
 						
-						alert("Course Successfully Registered");
+						alert("Course Registered Successfully");
+	
 						//uncheck the checkbox
 						this.setState({
 							MasterChecked: false,
@@ -165,7 +171,7 @@ class SelectFailedCourse extends React.Component {
 				})
 				.catch(function (err) {
 					console.log(err);
-					alert("Course Registration Failed");
+					alert("Course Registration Failed Contact Admin");
 				});
 		}
 
@@ -183,7 +189,7 @@ class SelectFailedCourse extends React.Component {
 						<table class="min-w-full divide-y divide-gray-200">
 							<thead className="bg-gray-50">
 								<tr>
-									<th
+									{/* <th
 										scope="col"
 										classname="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 									>
@@ -194,7 +200,7 @@ class SelectFailedCourse extends React.Component {
 											id="mastercheck"
 											onChange={(e) => this.onMasterCheck(e)}
 										/>
-									</th>
+									</th> */}
 									<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 										Name
 									</th>
@@ -208,9 +214,6 @@ class SelectFailedCourse extends React.Component {
 										Course Type
 									</th>
 									<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-										Level
-									</th>
-									<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 										Status
 									</th>
 								</tr>
@@ -218,7 +221,7 @@ class SelectFailedCourse extends React.Component {
 							<tbody className="bg-white divide-y divide-gray-200">
 								{this.state.List.map((user) => (
 									<tr key={user.id} className={user.selected ? "selected" : ""}>
-										<th>
+										{/* <th>
 											<input
 												type="checkbox"
 												checked={user.selected}
@@ -226,13 +229,9 @@ class SelectFailedCourse extends React.Component {
 												id="rowcheck{user.id}"
 												onChange={(e) => this.onItemCheck(e, user)}
 											/>
-										</th>
-										<td className="px-6 py-4 whitespace-nowrap">
-											{user.course}
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
-											{user.code}
-										</td>
+										</th> */}
+										<td className="px-6 py-4 whitespace-nowrap">{user.course}</td>
+										<td className="px-6 py-4 whitespace-nowrap">{user.course_student}</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											{user.credit_unit}
 										</td>
@@ -240,32 +239,29 @@ class SelectFailedCourse extends React.Component {
 											{user.courseType}
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
-											{user.year}
-										</td>
-										<td className="px-6 py-4 whitespace-nowrap">
 											{/* change status if student is register */}
-											{user.status !== 'P' ? (
-												<span className="text-green-500">Registered</span>
+											{user.status === 'A' ? (
+												<span className="text-green-500">Approved</span>
 											) :
 											(
-												<span className="text-red-500">Not Registered</span>
+												<span className="text-red-500">Not Approved</span>
 											)
 										}
 										</td>
 									</tr>
 								))}
+								
 							</tbody>
 						</table>
 						<br />
-						<button
+						{/*<button
 							className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
 							onClick={() => this.getSelectedRows()}
 						>
-							{/* console.log selected list
-                            {this.state.SelectedList.length > 0 ? console.log(this.state.SelectedList) : "No Selected List"} */}
 							Register
 						</button>
-						{/* <div className="row">
+						<br />
+						 <div className="row">
 							<b>All Row Items:</b>
 							<code>{JSON.stringify(this.state.List)}</code>
 						</div>
@@ -280,4 +276,4 @@ class SelectFailedCourse extends React.Component {
 	}
 }
 
-export default SelectFailedCourse;
+export default ApprovedCourse;

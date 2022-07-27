@@ -13,6 +13,8 @@ router = DefaultRouter()
 router.register(r'reg-courses', views.RegisteredCourseView, basename='registercourse')
 router.register(r'failed-courses', views.FailedCourseRegistrationView, basename='regfailedcourse')
 router.register(r'result', views.ResultView, basename='results')
+router.register(r'approvals', views.ApprovedCourseView, basename='approvals')
+router.register(r'failedcourse-approvals', views.ApprovedFailedCoursesView, basename='approvals')
 
 app_name = 'students'
 urlpatterns = [

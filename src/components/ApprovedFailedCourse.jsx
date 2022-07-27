@@ -1,7 +1,7 @@
 import React from "react";
 const axios = require(`axios`);
 
-class SelectFailedCourse extends React.Component {
+class ApprovedFailedCourse extends React.Component {
 	// Event to get selected rows(Optional)
 	constructor(props) {
 		super(props);
@@ -15,7 +15,7 @@ class SelectFailedCourse extends React.Component {
 	}
 
 	componentDidMount() {
-		const url = `/api/v1/failed-courses/`;
+		const url = `/api/v1/failedcourse-approvals/`;
 		const token1 = JSON.parse(localStorage.getItem("authTokens"))["access"];
 		let data = [];
 		axios({
@@ -183,7 +183,7 @@ class SelectFailedCourse extends React.Component {
 						<table class="min-w-full divide-y divide-gray-200">
 							<thead className="bg-gray-50">
 								<tr>
-									<th
+									{/* <th
 										scope="col"
 										classname="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 									>
@@ -194,7 +194,7 @@ class SelectFailedCourse extends React.Component {
 											id="mastercheck"
 											onChange={(e) => this.onMasterCheck(e)}
 										/>
-									</th>
+									</th> */}
 									<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 										Name
 									</th>
@@ -218,7 +218,7 @@ class SelectFailedCourse extends React.Component {
 							<tbody className="bg-white divide-y divide-gray-200">
 								{this.state.List.map((user) => (
 									<tr key={user.id} className={user.selected ? "selected" : ""}>
-										<th>
+										{/* <th>
 											<input
 												type="checkbox"
 												checked={user.selected}
@@ -226,7 +226,7 @@ class SelectFailedCourse extends React.Component {
 												id="rowcheck{user.id}"
 												onChange={(e) => this.onItemCheck(e, user)}
 											/>
-										</th>
+										</th> */}
 										<td className="px-6 py-4 whitespace-nowrap">
 											{user.course}
 										</td>
@@ -244,11 +244,11 @@ class SelectFailedCourse extends React.Component {
 										</td>
 										<td className="px-6 py-4 whitespace-nowrap">
 											{/* change status if student is register */}
-											{user.status !== 'P' ? (
-												<span className="text-green-500">Registered</span>
+											{user.status === 'A' ? (
+												<span className="text-green-500">Approved</span>
 											) :
 											(
-												<span className="text-red-500">Not Registered</span>
+												<span className="text-red-500">Not Approved</span>
 											)
 										}
 										</td>
@@ -257,12 +257,12 @@ class SelectFailedCourse extends React.Component {
 							</tbody>
 						</table>
 						<br />
-						<button
+						{/*<button
 							className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-							onClick={() => this.getSelectedRows()}
+							//onClick={() => this.getSelectedRows()}
 						>
 							{/* console.log selected list
-                            {this.state.SelectedList.length > 0 ? console.log(this.state.SelectedList) : "No Selected List"} */}
+                            {this.state.SelectedList.length > 0 ? console.log(this.state.SelectedList) : "No Selected List"} 
 							Register
 						</button>
 						{/* <div className="row">
@@ -280,4 +280,4 @@ class SelectFailedCourse extends React.Component {
 	}
 }
 
-export default SelectFailedCourse;
+export default ApprovedFailedCourse;

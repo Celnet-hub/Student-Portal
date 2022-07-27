@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 
 import { Button } from '.';
-import { userProfileData } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 import avatar1 from '../data/avatar1.jpg';
 import AuthContext from "../contexts/AuthContext";

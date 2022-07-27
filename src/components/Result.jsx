@@ -1,5 +1,4 @@
 import React from "react";
-import jwt_decode from "jwt-decode";
 const axios = require(`axios`);
 
 //create function to get the data from the server
@@ -20,7 +19,6 @@ class StudentResultTable extends React.Component {
 	}
 
 	componentDidMount() {
-		const url = `/api/courses/`;
 		const url1 = `/api/v1/result/`;
 		const token1 = JSON.parse(localStorage.getItem("authTokens"))["access"];
 		let data = [];

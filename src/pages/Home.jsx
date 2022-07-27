@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { Navbar, Footer, Sidebar, ThemeSettings } from '../components';
-import { Ecommerce, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor } from '../pages/';
 
 import StudentsDashboard from '../pages/StudentsDashboard.jsx';
 import CourseReg from '../pages/CourseReg.jsx';
 import StudentResult from './StudentResult';
+import CourseApproval from '../pages/CourseApprovals.jsx';
 
 import { useStateContext } from '../contexts/ContextProvider';
 import { AuthProvider } from "../contexts/AuthContext";
@@ -72,9 +72,17 @@ const Home = () => {
                 <Route path="/" element={(<StudentsDashboard />)} exact/>
                 
                 {/* pages  */}
+                <Route element= {<PrivateRoute/>}>
                 <Route path="/course-registration" element={<CourseReg />} />
+
                 <Route path="/results" element={<StudentResult />} />
-                <Route path="/course-approvals" element={<Employees />} />
+
+                <Route path="/course-approvals" element={<CourseApproval />} />
+
+                </Route>
+                
+               
+                {/* <Route path="/course-approvals" element={<CourseApproval />} /> */}
               </Routes>
          
             </div>

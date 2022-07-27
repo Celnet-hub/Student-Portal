@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import jwt_decode from "jwt-decode";
 const axios = require(`axios`);
 
