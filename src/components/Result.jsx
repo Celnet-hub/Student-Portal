@@ -1,4 +1,6 @@
 import React from "react";
+import jwt_decode from "jwt-decode";
+
 const axios = require(`axios`);
 
 //create function to get the data from the server
@@ -15,6 +17,9 @@ class StudentResultTable extends React.Component {
 			isRegistered: false,
 			total_credit_units: 0,
 			total_points: 0,
+			GPA: 0,
+			CGPA: 0,
+			current_level: 0,
 		};
 	}
 
@@ -22,6 +27,8 @@ class StudentResultTable extends React.Component {
 		const url1 = `/api/v1/result/`;
 		const token1 = JSON.parse(localStorage.getItem("authTokens"))["access"];
 		let data = [];
+		let decoded = jwt_decode(token1);
+		console.log(decoded);
 		axios({
 			method: "get",
 			url: url1,
@@ -36,13 +43,12 @@ class StudentResultTable extends React.Component {
 				this.setState({
 					isLoaded: true,
 					List: data,
+					current_level: decoded.current_level,
 				});
 			})
 			.catch(function (error) {
 				console.log(error);
 			});
-
-
 	}
 
 	// Select/ UnSelect Table rows
@@ -88,23 +94,53 @@ class StudentResultTable extends React.Component {
 			isRegistered: false,
 		});
 
-		//claculate the total credit units and total points
+		//claculate the total credit units and total points and results
 		let total_credit_units = 0;
 		let total_points = 0;
+		let GPA = 0;
+		let CGPA = 0;
 		this.state.List.map((e) => {
 			total_credit_units += e.credit_unit;
 			total_points += e.points;
+			if (e.grade === "A") {
+				GPA += 5 * e.credit_unit;
+			} else if (e.grade === "B") {
+				GPA += 4 * e.credit_unit;
+			} else if (e.grade === "C") {
+				GPA += 3 * e.credit_unit;
+			} else if (e.grade === "D") {
+				GPA += 2 * e.credit_unit;
+			} else if (e.grade === "F") {
+				GPA += 0 * e.credit_unit;
+			}
+
+		});
+		let final_GPA = GPA / total_credit_units;
+
+		// calculate the CGPA will be done in the next version and from the backend.
+		if (this.state.current_level === 100) {
+			CGPA = final_GPA/1
 		}
-		);
+		else if (this.state.current_level === 200) {
+			CGPA = final_GPA/2
+		}
+		else if (this.state.current_level === 300) {
+			CGPA = final_GPA/3
+		}
+		else if (this.state.current_level === 400) {
+			CGPA = final_GPA/4
+		}
+		else if (this.state.current_level === 500) {
+			CGPA = final_GPA/5
+		}
+
 		this.setState({
 			total_credit_units: total_credit_units,
 			total_points: total_points,
+			GPA: final_GPA,
+			CGPA: CGPA,
 		});
-
-
 	}
-
-
 
 	render() {
 		return (
@@ -207,7 +243,7 @@ class StudentResultTable extends React.Component {
 											className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
 											htmlFor="grid-first-name"
 										>
-											Total Credit Unit 
+											Total Credit Unit
 										</label>
 										<input
 											className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -228,6 +264,20 @@ class StudentResultTable extends React.Component {
 											id="grid-first-name"
 											type="text"
 											value={this.state.total_points}
+											disabled
+										/>
+
+										<label
+											className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+											htmlFor="grid-first-name"
+										>
+											GPA
+										</label>
+										<input
+											className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+											id="grid-first-name"
+											type="text"
+											value={this.state.GPA}
 											disabled
 										/>
 									</div>
