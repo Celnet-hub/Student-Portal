@@ -1,4 +1,35 @@
-# Getting Started with Create React App
+# This project was built using two technologies:
+    * React (Front-End)
+    * Django (Bank-End)
+
+# Features of the Student Portal:
+* The student should have a Dashboard 
+* The student should be able to do the Registration: 
+    *  On the registration pages of students, it should show courses that are to be registered only by the students for that semester. Core courses, GST, electives and outstanding
+    * Using this illustration, 
+        * A 400L computer student registering for the first semester should not see lower-level courses that he/she has passed. He/she should only see the following:
+            * 400L core courses for the first semester 
+            * Outstanding GST courses for the first semester 
+            * 400L Electives for the first semester (if any) 
+            * Lower level cores courses that he/she hasn't passed
+* The student should be able to view the Result 
+* The student should be able to view Approved course registration 
+* The student should be able to view unapproved registered courses
+* The student should be able to edit unapproved registered courses
+
+# Steps:
+Clone the github repository using the command below:
+
+`git clone https://github.com/Celnet-hub/Student-Portal.git` 
+
+Change directory
+
+`cd Student-Portal`
+
+
+# Getting Started with Create React App (Project FrontEnd)
+
+Before starting make sure [Node](https://nodejs.org/en/download/) is installed in your local device.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -14,30 +45,33 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+# Getting started with the Djanjo application (Project Backend)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Before starting make sure that [python](https://www.python.org/downloads/) is installed in your local device.
 
-### `npm run build`
+Create and activate a virtual environment for the application:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`python3 -m venv ~/.backend`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`source venv/bin/activate`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Install dependencies 
 
-### `npm run eject`
+`pip install -r requirements.txt`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Create a superuser for the admin. This user will be used to login to the admin portion of the application.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`python manage.py createsuperuser` and follow the prompt.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+`python manage.py makemigrations`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+`python manage.py migrate`
+
+`python manage.py runserver`
+
+The last command will start the python server on port 8000 on localhost
+`http://localhost:8000`
+
 
 ## Learn More
 
@@ -68,3 +102,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+## More about [Django](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Introduction)
