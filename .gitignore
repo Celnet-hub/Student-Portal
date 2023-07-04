@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-Fontend/node_modules
+/Fontend/node_modules
 /.pnp
 .pnp.js
 
@@ -36,3 +36,6 @@ db.sqlite3
 
 # scretes
 db_password.txt
+
+#db data
+/data
