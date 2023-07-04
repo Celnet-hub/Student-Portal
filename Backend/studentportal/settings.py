@@ -35,7 +35,7 @@ SECRET_KEY = 'django-insecure-3o#a#12*60@@blo082%-j2w2y=_qx59(v-^11wpdh*e7%m2-0#
 DEBUG = True
 
 #DEBUB = True
-ALLOWED_HOSTS = ['https://lumistudentportal.herokuapp.com/', 'localhost:3001', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','0.0.0.0']
 
 
 # Application definition
@@ -142,19 +142,24 @@ WSGI_APPLICATION = 'studentportal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
+        'PORT': '5432',
+    }
+}
 
 '''
 The idea here is to clear the DATABASES variable and then set the 'default' key using the dj_database_url module. This module uses Heroku's DATABASE_URL variable if it's on Heroku, or it uses the DATABASE_URL we set in the .env file if we're working locally.
 
 '''
-DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# DATABASES = {}
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 
@@ -216,7 +221,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = (
-       'http://localhost:3001','https://lumistudentportal.herokuapp.com', 'http://localhost:3000'
+       'http://localhost:3001','https://lumistudentportal.herokuapp.com', 'http://localhost:3000', 'http://localhost:8000'
 )
 
 
@@ -224,11 +229,11 @@ CORS_ORIGIN_WHITELIST = (
 
 '''
 If you ran the Django application as specified above, you might get an error when working locally because the dj_database_url module wants to log in with SSL. Heroku Postgres requires SSL, but SQLite doesn't need or expect it. Here's how to fix that:'''
-options = DATABASES['default'].get('OPTIONS', {})
-options.pop('sslmode', None)
+# options = DATABASES['default'].get('OPTIONS', {})
+# options.pop('sslmode', None)
 
 
-# Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
-del DATABASES['default']['OPTIONS']['sslmode'] # Remove option from DATABASES
+# # Configure Django App for Heroku.
+# import django_heroku
+# django_heroku.settings(locals())
+# del DATABASES['default']['OPTIONS']['sslmode'] # Remove option from DATABASES

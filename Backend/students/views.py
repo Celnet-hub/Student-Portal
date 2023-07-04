@@ -202,9 +202,9 @@ class FailedCourseView(generics.ListAPIView):
 class RegisteredCourseView(viewsets.ModelViewSet):
     serializer_class =  CourseRegistrationSerializer
     permission_classes = (IsAuthenticated,)
-    queryset =   CourseRegistration.objects.all()
+    #queryset =   CourseRegistration.objects.all()
 
-    print(queryset)
+    #print(queryset)
 
     def perform_create(self, serializer):
         return super().perform_create(serializer)

@@ -1,0 +1,69 @@
+version: '3.9'
+
+# defines services
+services:
+  db:
+    image: postgres:14-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=/run/secrets/db_password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data/
+    networks:
+      - portal-network
+    secrets:
+      - db_password
+
+  reactfrontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./Frontend:/app/frontend
+    depends_on:
+      - pybackend
+    networks:
+      - portal-network
+
+  pybackend: 
+    build: 
+      context: ./Backend
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_PASSWORD=/run/secrets/db_password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./Backend:/app/backend
+    depends_on:
+      - db
+    networks:
+      - portal-network
+    secrets:
+      - db_password
+
+  # used to have a UI for the database  
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+    networks:
+      - portal-network
+
+secrets:
+  db_password:
+    file: db_password.txt
+
+networks:
+  portal-network:
+    driver: bridge
