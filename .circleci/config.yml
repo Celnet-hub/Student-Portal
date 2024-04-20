@@ -28,6 +28,7 @@ jobs:
     # CircleCI will report the results back to your VCS provider.
     steps:
       - checkout
+      - app-dir: ~/project/Frontend/
       - restore_cache:
           keys:
             - dependencies-{{ checksum "package-lock.json"}}
