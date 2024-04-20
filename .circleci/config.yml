@@ -21,6 +21,7 @@ jobs:
     # A list of available CircleCI Docker convenience images are available here: https://circleci.com/developer/images
     docker:
       - image: cimg/node:20.12.2
+    working_directory: ~/project/Frontend
     # Checkout the code as the first step. This is a dedicated CircleCI step.
     # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
     # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
@@ -28,10 +29,9 @@ jobs:
     # CircleCI will report the results back to your VCS provider.
     steps:
       - checkout
-      - app-dir: ~/project/Frontend/
       - restore_cache:
           keys:
-            - dependencies-{{ checksum "package-lock.json"}}
+            - dependencies-{{ checksum "Frontend/package-lock.json"}}
             - dependencies-
       - run:
           name: install frontend dependencies
@@ -39,7 +39,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: dependencies-{{ checksum "package-lock.json"}}
+          key: dependencies-{{ checksum "Frontend/package-lock.json"}}
   
   # build-backend:
   #   docker:
