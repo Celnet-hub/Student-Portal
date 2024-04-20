@@ -9,17 +9,18 @@ orbs:
   # so you dont have to copy and paste it everywhere.
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
   python: circleci/python@2.1.1
+  node: circleci/node@5.2.0
   aws-cli: circleci/aws-cli@4.1.3
 
 # Define a job to be invoked later in a workflow.
 jobs:
-  build-and-test: # This is the name of the job, feel free to change it to better match what you're trying to do!
+  build-frontend: # This is the name of the job, The first job is to build the frontend of the application.
     # These next lines defines a Docker executors: https://circleci.com/docs/executor-types/
+    # The executor is the environment in which the steps below will be executed.
     # You can specify an image from Dockerhub or use one of the convenience images from CircleCI's Developer Hub
-    # A list of available CircleCI Docker convenience images are available here: https://circleci.com/developer/images/image/cimg/python
-    # The executor is the environment in which the steps below will be executed - below will use a python 3.10.2 container
+    # A list of available CircleCI Docker convenience images are available here: https://circleci.com/developer/images
     docker:
-      - image: cimg/python:3.10.2
+      - image: cimg/node:20.12.2
     # Checkout the code as the first step. This is a dedicated CircleCI step.
     # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
     # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
@@ -27,17 +28,85 @@ jobs:
     # CircleCI will report the results back to your VCS provider.
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
-          app-dir: ~/project/Backend/  # If your requirements.txt isn't in the root directory.
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "package-lock.json"}}
+            - dependencies-
       - run:
-          name: Run tests
-          # This assumes pytest is installed via the install-package step above
-          command: echo testing
+          name: install frontend dependencies
+          command: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependencies-{{ checksum "package-lock.json"}}
+  
+  # build-backend:
+  #   docker:
+  #     - image: cimg/node:20.12.2
+  #   # Checkout the code as the first step. This is a dedicated CircleCI step.
+  #   # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
+  #   # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
+  #   # Then run your tests!
+  #   # CircleCI will report the results back to your VCS provider.
+  #   steps:
+  #     - checkout
+  #     - python/install-packages:
+  #         pkg-manager: pip
+  #         app-dir: ~/project/Backend/  # If your requirements.txt isn't in the root directory.
+  #     - run:
+  #         name: Run tests
+  #         # This assumes pytest is installed via the install-package step above
+  #         command: echo testing
+
+
+  # test-frontend:
+  #   #Test frontend
+
+  # test-backend:
+  #   #test backend
+
+  # deploy-infrastructure:
+  #   docker:
+  #     - image: python:3.x # Or an image with Ansible
+  #   steps:
+  #     - checkout
+  #     - aws-cli/setup 
+  #     - run: aws cloudformation deploy ... 
+
+  # configure-infrastructure:
+  #   docker:
+  #     - image: python:3.x 
+  #   steps:
+  #     - checkout
+  #     - run: ansible-playbook -i inventory.yml main.yml 
+   
+  # deploy-application: 
+  #   # ... (Deployment steps; depends on your AWS setup)
+
+  # integration-tests: 
+  #   # ... (Tests to verify deployment)
+
+  # setup-monitoring:
+  #   #
 
 # Invoke jobs via workflows
 workflows:
   student-portal-cicd: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - build-and-test
+      - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - deploy-infrastructure:
+      #     requires: [test-frontend, test-backend]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - deploy-application:
+      #     requires: [configure-infrastructure]
+      # - integration-tests:
+      #     requires: [deploy-application]
+      # - setup-monitoring:
+      #     requires: [deploy-application] 

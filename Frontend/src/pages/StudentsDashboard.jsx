@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useStateContext } from '../contexts/ContextProvider';
-import ElizadeUniversity from '../data/Elizade-University logo.png';
+import UniversityLogo from '../data/Godfrey Okoye University.jpeg';
 import jwt_decode from "jwt-decode";
 
 
@@ -23,7 +23,7 @@ const StudentsDashboard = () => {
 							<img
 								className="mx-auto h-24 w-auto"
 								// src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-								src= {ElizadeUniversity}
+								src= {UniversityLogo}
 								alt="Workflow"
 							/>
 							<h2 className="mt-6 text-center text-5xl font-extrabold text-gray-900">

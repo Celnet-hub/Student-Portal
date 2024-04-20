@@ -2,7 +2,7 @@ import React, { Component, useContext } from "react";
 import { LockClosedIcon } from "@heroicons/react/solid";
 //import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
-import ElizadeUniversity from '../data/Elizade-University logo.png';
+import UniversityLogo from '../data/Godfrey Okoye University.jpeg';
 const Login = () => {
 	
 	const { loginUser } = useContext(AuthContext);
@@ -25,7 +25,7 @@ const Login = () => {
 						<img
 							className="mx-auto h-12 w-auto"
 							// src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-							src= {ElizadeUniversity}
+							src= {UniversityLogo}
 							alt="Workflow"
 						/>
 						<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">

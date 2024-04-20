@@ -3,7 +3,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
-import ElizadeUniversity from '../data/Elizade-University logo.png';
+import UniversityLogo from '../data/Godfrey Okoye University.jpeg';
 import { UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
 import jwt_decode from "jwt-decode";
@@ -105,7 +105,7 @@ const Navbar = () => {
 					>
 						<img
 							className="rounded-full w-10 h-10"
-							src={ElizadeUniversity}
+							src={UniversityLogo}
 							alt="user-profile"
 						/>
 						<p>

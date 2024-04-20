@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ElizadeUniversity from '../data/Elizade-University logo.png';
+import UniversityLogo from '../data/Godfrey Okoye University.jpeg';
 
 export default class LandingPage extends Component {
 	render() {
@@ -11,7 +11,7 @@ export default class LandingPage extends Component {
 							<img
 								className="mx-auto h-24 w-auto"
 								// src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-								src= {ElizadeUniversity}
+								src= {UniversityLogo}
 								alt="Workflow"
 							/>
 							<h2 className="mt-6 text-center text-5xl font-extrabold text-gray-900">
