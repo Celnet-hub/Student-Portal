@@ -72,7 +72,7 @@ jobs:
             - dependencies-
       - run:
           name: Run Frontend Tests
-          command: npm test
+          command: cd Frontend && npm test
 
   # test-backend:
   #   #test backend
