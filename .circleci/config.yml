@@ -55,10 +55,6 @@ jobs:
     # CircleCI will report the results back to your VCS provider.
     steps:
       - checkout
-      # - restore_cache:
-      #     keys:
-      #       - requirements-{{ checksum "Backend/requirements.txt" }} # Adjust if necessary
-      #       - requirements-
       - python/install-packages:
           pkg-manager: pip
           app-dir: ~/project/Backend/  # If your requirements.txt isn't in the root directory.
@@ -66,10 +62,6 @@ jobs:
           name: Build Completed.
           # This assumes pytest is installed via the install-package step above
           command: echo Build completed.
-      # - save_cache:
-      #     paths:
-      #       - Backend/.venv
-      #     key: requirements-{{ checksum "Backend/requirements.txt" }}
 
 
   # test-frontend:
