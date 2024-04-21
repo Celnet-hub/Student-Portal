@@ -56,9 +56,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-      keys:
-        - requirements-{{ checksum "backend/requirements.txt" }} # Adjust if necessary
-        - requirements-
+          keys:
+            - requirements-{{ checksum "backend/requirements.txt" }} # Adjust if necessary
+            - requirements-
       - python/install-packages:
           pkg-manager: pip
           app-dir: ~/project/Backend/  # If your requirements.txt isn't in the root directory.
