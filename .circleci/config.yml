@@ -61,9 +61,18 @@ jobs:
 
 
   test-frontend:
-    - run:
-     name: Run Frontend Tests
-     command: npm test
+    docker:
+      - image: cimg/node:20.12.2
+    working_directory: ~/project/Frontend
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "Frontend/package-lock.json"}}
+            - dependencies-
+      - run:
+          name: Run Frontend Tests
+          command: npm test
 
   # test-backend:
   #   #test backend
