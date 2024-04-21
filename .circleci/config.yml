@@ -44,23 +44,32 @@ jobs:
             - node_modules
           key: dependencies-{{ checksum "Frontend/package-lock.json"}}
   
-  # build-backend:
-  #   docker:
-  #     - image: cimg/node:20.12.2
-  #   # Checkout the code as the first step. This is a dedicated CircleCI step.
-  #   # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
-  #   # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
-  #   # Then run your tests!
-  #   # CircleCI will report the results back to your VCS provider.
-  #   steps:
-  #     - checkout
-  #     - python/install-packages:
-  #         pkg-manager: pip
-  #         app-dir: ~/project/Backend/  # If your requirements.txt isn't in the root directory.
-  #     - run:
-  #         name: Run tests
-  #         # This assumes pytest is installed via the install-package step above
-  #         command: echo testing
+  build-backend:
+    docker:
+      - image: cimg/python:3.12.3
+    working_directory: ~/project/Backend
+    # Checkout the code as the first step. This is a dedicated CircleCI step.
+    # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
+    # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
+    # Then run your tests!
+    # CircleCI will report the results back to your VCS provider.
+    steps:
+      - checkout
+      - restore_cache:
+      keys:
+        - requirements-{{ checksum "backend/requirements.txt" }} # Adjust if necessary
+        - requirements-
+      - python/install-packages:
+          pkg-manager: pip
+          app-dir: ~/project/Backend/  # If your requirements.txt isn't in the root directory.
+      - run:
+          name: Build Completed.
+          # This assumes pytest is installed via the install-package step above
+          command: echo Build completed.
+      - save_cache:
+          paths:
+            - Backend/.venv
+          key: requirements-{{ checksum "backend/requirements.txt" }}
 
 
   # test-frontend:
@@ -99,7 +108,7 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-frontend
-      # - build-backend
+      - build-backend
       # - test-frontend:
       #     requires: [build-frontend]
       # - test-backend:
