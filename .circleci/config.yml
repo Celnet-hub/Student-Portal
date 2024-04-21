@@ -44,7 +44,7 @@ jobs:
             - node_modules
           key: dependencies-{{ checksum "Frontend/package-lock.json"}}
   
-  build-backend:
+  build-django-backend:
     docker:
       - image: cimg/python:3.12.3
     working_directory: ~/project/Backend/
@@ -55,13 +55,9 @@ jobs:
     # CircleCI will report the results back to your VCS provider.
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
-          app-dir: ~/project/Backend/  # If your requirements.txt isn't in the root directory.
       - run:
-          name: Build Completed.
-          # This assumes pytest is installed via the install-package step above
-          command: echo Build completed.
+          name: Install Python Dependencies
+          command: cd Backend && pip install -r requirements.txt
 
 
   # test-frontend:
@@ -100,7 +96,7 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-frontend
-      - build-backend:
+      - build-django-backend:
           requires: [build-frontend]
       # - test-frontend:
       #     requires: [build-frontend]
