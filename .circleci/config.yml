@@ -60,8 +60,10 @@ jobs:
           command: cd Backend && pip install -r requirements.txt
 
 
-  # test-frontend:
-  #   #Test frontend
+  test-frontend:
+    - run:
+     name: Run Frontend Tests
+     command: npm test
 
   # test-backend:
   #   #test backend
@@ -98,8 +100,8 @@ workflows:
       - build-frontend
       - build-django-backend:
           requires: [build-frontend]
-      # - test-frontend:
-      #     requires: [build-frontend]
+      - test-frontend:
+          requires: [build-frontend]
       # - test-backend:
       #     requires: [build-backend]
       # - deploy-infrastructure:
