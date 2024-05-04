@@ -18,9 +18,10 @@ services:
       - db_password
 
   reactfrontend:
-    build:
-      context: ./Frontend
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./Frontend
+    #   dockerfile: Dockerfile
+    image: celnet1/studentportal-fe:lastest
     ports:
       - '3000:3000'
     volumes:
@@ -31,9 +32,10 @@ services:
       - portal-network
 
   pybackend: 
-    build: 
-      context: ./Backend
-      dockerfile: Dockerfile
+    # build: 
+    #   context: ./Backend
+    #   dockerfile: Dockerfile
+    image: celnet1/studentportal-be:lastest
     environment:
       - POSTGRES_PASSWORD=/run/secrets/db_password
       - POSTGRES_USER=postgres
