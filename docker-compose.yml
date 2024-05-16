@@ -7,7 +7,7 @@ services:
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_PASSWORD=/run/secrets/db_password
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
     volumes:
@@ -15,7 +15,7 @@ services:
     networks:
       - portal-network
     secrets:
-      - db_password
+      - db_pass
 
   reactfrontend:
     # build:
@@ -32,12 +32,12 @@ services:
       - portal-network
 
   pybackend: 
-    # build: 
-    #   context: ./Backend
-    #   dockerfile: Dockerfile
-    image: celnet1/studentportal-be:lastest
+    build: 
+      context: ./Backend
+      dockerfile: Dockerfile
+    # image: celnet1/studentportal-be:lastest
     environment:
-      - POSTGRES_PASSWORD=/run/secrets/db_password
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
     ports:
@@ -49,7 +49,7 @@ services:
     networks:
       - portal-network
     secrets:
-      - db_password
+      - db_pass
 
   # used to have a UI for the database  
   adminer:
@@ -63,8 +63,8 @@ services:
       - portal-network
 
 secrets:
-  db_password:
-    file: db_password.txt
+  db_pass:
+    file: ''
 
 networks:
   portal-network:
