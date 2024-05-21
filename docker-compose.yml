@@ -3,7 +3,7 @@ version: '3.9'
 # defines services
 services:
   db:
-    image: postgres:14-alpine
+    image: celnet1/studentportal-db:lastest
     ports:
       - '5432:5432'
     environment:
@@ -33,9 +33,9 @@ services:
 
   pybackend: 
     build: 
-      context: ./Backend
-      dockerfile: Dockerfile
-    # image: celnet1/studentportal-be:lastest
+      # context: ./Backend
+      # dockerfile: Dockerfile
+    image: celnet1/studentportal-py-be:lastest
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
