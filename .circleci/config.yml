@@ -41,7 +41,7 @@ jobs:
           command: cd Frontend && npm install
       - save_cache:
           paths:
-            - node_modules
+            - ~/project/Frontend/node_modules
           key: dependencies-{{ checksum "Frontend/package-lock.json"}}
       - run: cd Frontend && ls -la 
   
@@ -73,7 +73,7 @@ jobs:
             - dependencies-
       - run:
           name: List frontend Files
-          command: cd Frontend && npm install && ls -la
+          command: cd Frontend && ls -la
 
       # - run:
       #     name: Run Frontend Tests
