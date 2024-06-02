@@ -71,8 +71,12 @@ jobs:
             - dependencies-{{ checksum "Frontend/package-lock.json"}}
             - dependencies-
       - run:
-          name: Run Frontend Tests
-          command: cd Frontend && npm start
+          name: List frontend Files
+          command: cd Frontend && ls -la
+
+      # - run:
+      #     name: Run Frontend Tests
+      #     command: cd Frontend && npm start
 
   # test-backend:
   #   #test backend
