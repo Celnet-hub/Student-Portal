@@ -43,6 +43,7 @@ jobs:
           paths:
             - node_modules
           key: dependencies-{{ checksum "Frontend/package-lock.json"}}
+      - run: cd Frontend && ls -la 
   
   build-django-backend:
     docker:
@@ -63,7 +64,7 @@ jobs:
   test-frontend:
     docker:
       - image: cimg/node:20.12.2
-    working_directory: ~/project/Frontend
+    # working_directory: ~/project/Frontend
     steps:
       - checkout
       - restore_cache:
