@@ -73,7 +73,7 @@ jobs:
             - dependencies-
       - run:
           name: List frontend Files
-          command: cd Frontend && ls -la
+          command: cd Frontend && npm install && ls -la
 
       # - run:
       #     name: Run Frontend Tests
