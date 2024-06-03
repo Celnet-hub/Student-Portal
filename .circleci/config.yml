@@ -48,11 +48,11 @@ jobs:
       - image: circleci/python:3.8
     steps:
       - attach_workspace:
-          at: /workspace
+          at: ~/project
       - run:
           name: Deploy
           command: |
-            cd /workspace/Backend
+            cd ~/project/Backend
             # Add your deployment commands here
             # For example, using SSH to transfer files or using a deployment tool like Heroku CLI
             # Example:
