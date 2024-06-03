@@ -43,24 +43,76 @@ jobs:
           paths:
             - Backend
 
-  deploy:
+  deploy-infrastructure:
     docker:
-      - image: circleci/python:3.8
+      - image: amazon/aws-cli
     steps:
-      - attach_workspace:
-          at: ~/project
+      - checkout
       - run:
-          name: Deploy
+          name: Install dependencies
           command: |
-            cd ~/project/Backend
-            ls -la
-            cd ~/project/Frontend
-            ls -la
-            # Add your deployment commands here
-            # For example, using SSH to transfer files or using a deployment tool like Heroku CLI
-            # Example:
-            scp -r ~/project/Backend 18.214.89.100:/home/
-            # scp -r /workspace/Frontend/build yourserver:/path/to/deploy/static
+            yum install -y tar gzip
+      # - run:
+      #     name: Get old stack id
+      #     command: |
+      #       export oldwfid=$(aws cloudformation \
+      #         list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+      #         --no-paginate --output text)
+      #       echo ${oldwfid} >> .circleci/ansible/oldworkflowid.txt
+      #       cat .circleci/ansible/oldworkflowid.txt
+      - run:
+          name: Ensure network is created
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/network.yml \
+              --tags project=studentportal \
+              --stack-name "studentportal-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+      - run:
+          name: Ensure infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/portalServer.yml \
+              --tags project=studentportal \
+              --stack-name "studentportal-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - run:
+          name: Add server ip to ansible inventory
+          command: |
+            echo $(aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters Name=tag:aws:cloudformation:stack-name,Values=studentportal-${CIRCLE_WORKFLOW_ID:0:7} \
+              --output text) >> .circleci/ansible/inventory.txt
+            cat .circleci/ansible/inventory.txt
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .circleci/ansible/inventory.txt
+      - destroy-environment:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}  
+      - revert-migrations:
+          id: ${CIRCLE_WORKFLOW_ID:0:7}   
+
+
+  # deploy:
+  #   docker:
+  #     - image: circleci/python:3.8
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/project
+  #     - run:
+  #         name: Deploy
+  #         command: |
+  #           cd ~/project/Backend
+  #           ls -la
+  #           cd ~/project/Frontend
+  #           ls -la
+  #           # Add your deployment commands here
+  #           # For example, using SSH to transfer files or using a deployment tool like Heroku CLI
+  #           # Example:
+  #           # scp -r ~/project/Backend 18.214.89.100:/home/
+  #           # scp -r /workspace/Frontend/build yourserver:/path/to/deploy/static
 
 workflows:
   version: 2
@@ -70,6 +122,9 @@ workflows:
       - build-Backend:
           requires:
             - build-Frontend
-      - deploy:
+      - deploy-infrastructure:
           requires:
             - build-Backend
+      # - deploy:
+      #     requires:
+      #       - build-Backend
