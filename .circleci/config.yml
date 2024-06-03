@@ -59,7 +59,7 @@ jobs:
             # Add your deployment commands here
             # For example, using SSH to transfer files or using a deployment tool like Heroku CLI
             # Example:
-            # scp -r /workspace/Backend yourserver:/path/to/deploy
+            scp -r ~/project/Backend 18.214.89.100:/home/
             # scp -r /workspace/Frontend/build yourserver:/path/to/deploy/static
 
 workflows:
