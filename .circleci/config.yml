@@ -1,130 +1,72 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
-# Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
-# See: https://circleci.com/docs/orb-intro/
-orbs:
-  # Orb commands and jobs help you with common scripting around a language/tool
-  # so you dont have to copy and paste it everywhere.
-  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
-  python: circleci/python@2.1.1
-  node: circleci/node@5.2.0
-  aws-cli: circleci/aws-cli@4.1.3
-
-# Define a job to be invoked later in a workflow.
 jobs:
-  build-frontend: # This is the name of the job, The first job is to build the frontend of the application.
-    # These next lines defines a Docker executors: https://circleci.com/docs/executor-types/
-    # The executor is the environment in which the steps below will be executed.
-    # You can specify an image from Dockerhub or use one of the convenience images from CircleCI's Developer Hub
-    # A list of available CircleCI Docker convenience images are available here: https://circleci.com/developer/images
+  build-Frontend:
     docker:
-      - image: cimg/node:20.12.2
-    # working_directory: ~/project/Frontend/
-    # Checkout the code as the first step. This is a dedicated CircleCI step.
-    # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
-    # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
-    # Then run your tests!
-    # CircleCI will report the results back to your VCS provider.
+      - image: circleci/node:14
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - dependencies-{{ checksum "Frontend/package-lock.json"}}
-            - dependencies-
-
-      - run: ls -la 
-
       - run:
-          name: install frontend dependencies
-          command: cd Frontend && npm install
-      - save_cache:
+          name: Install Frontend dependencies
+          command: |
+            cd Frontend
+            npm install
+      - run:
+          name: Build Frontend
+          command: |
+            cd Frontend
+            npm run build
+      - persist_to_workspace:
+          root: .
           paths:
-            - ~/project/Frontend/node_modules
-          key: dependencies-{{ checksum "Frontend/package-lock.json"}}
-      - run: cd Frontend && ls -la 
-  
-  build-django-backend:
+            - Frontend/build
+
+  build-Backend:
     docker:
-      - image: cimg/python:3.12.3
-    working_directory: ~/project/Backend/
-    # Checkout the code as the first step. This is a dedicated CircleCI step.
-    # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
-    # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt
-    # Then run your tests!
-    # CircleCI will report the results back to your VCS provider.
+      - image: circleci/python:3.8
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 20.10.7
       - run:
-          name: Install Python Dependencies
-          command: cd Backend && pip install -r requirements.txt
+          name: Install Backend dependencies
+          command: |
+            cd Backend
+            pip install -r requirements.txt
+      - run:
+          name: Collect static files
+          command: |
+            cd Backend
+            python manage.py collectstatic --noinput
+      - persist_to_workspace:
+          root: .
+          paths:
+            - Backend
 
-
-  test-frontend:
+  deploy:
     docker:
-      - image: cimg/node:20.12.2
-    # working_directory: ~/project/Frontend
+      - image: circleci/python:3.8
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - dependencies-{{ checksum "Frontend/package-lock.json"}}
-            - dependencies-
+      - attach_workspace:
+          at: /workspace
       - run:
-          name: List frontend Files
-          command: cd Frontend && ls -la
+          name: Deploy
+          command: |
+            cd /workspace/Backend
+            # Add your deployment commands here
+            # For example, using SSH to transfer files or using a deployment tool like Heroku CLI
+            # Example:
+            # scp -r /workspace/Backend yourserver:/path/to/deploy
+            # scp -r /workspace/Frontend/build yourserver:/path/to/deploy/static
 
-      # - run:
-      #     name: Run Frontend Tests
-      #     command: cd Frontend && npm start
-
-  # test-backend:
-  #   #test backend
-
-  # deploy-infrastructure:
-  #   docker:
-  #     - image: python:3.x # Or an image with Ansible
-  #   steps:
-  #     - checkout
-  #     - aws-cli/setup 
-  #     - run: aws cloudformation deploy ... 
-
-  # configure-infrastructure:
-  #   docker:
-  #     - image: python:3.x 
-  #   steps:
-  #     - checkout
-  #     - run: ansible-playbook -i inventory.yml main.yml 
-   
-  # deploy-application: 
-  #   # ... (Deployment steps; depends on your AWS setup)
-
-  # integration-tests: 
-  #   # ... (Tests to verify deployment)
-
-  # setup-monitoring:
-  #   #
-
-# Invoke jobs via workflows
 workflows:
-  student-portal-cicd: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  version: 2
+  build-and-deploy:
     jobs:
-      - build-frontend
-      - build-django-backend:
-          requires: [build-frontend]
-      - test-frontend:
-          requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - deploy-infrastructure:
-      #     requires: [test-frontend, test-backend]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
-      # - deploy-application:
-      #     requires: [configure-infrastructure]
-      # - integration-tests:
-      #     requires: [deploy-application]
-      # - setup-monitoring:
-      #     requires: [deploy-application] 
+      - build-Frontend
+      - build-Backend:
+          requires:
+            - build-Frontend
+      - deploy:
+          requires:
+            - build-Backend
