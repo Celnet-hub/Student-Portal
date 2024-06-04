@@ -82,11 +82,7 @@ jobs:
               --tags project=studentportal \
               --stack-name "studentportal-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-      - run:
-          name: Describe created network events
-          command: |
-            aws cloudformation describe-stack-events \
-              --stack-name "studentportal-${CIRCLE_WORKFLOW_ID:0:7}"
+
       - run:
           name: Ensure Application Server infrastructure exists
           command: |
@@ -95,12 +91,6 @@ jobs:
               --tags project=studentportal \
               --stack-name "studentportal-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - run:
-          name: Describe Application Server infrastructure events
-          command: |
-            aws cloudformation describe-stack-events \
-              --stack-name "studentportal-${CIRCLE_WORKFLOW_ID:0:7}"
 
       - run:
           name: Add server ip to ansible inventory
