@@ -8,6 +8,7 @@ Parameters:
   EnvironmentName:
     Description: An environment name that will be prefixed to resource names
     Type: String
+    Default: StudentPortalCICDProject
 
   VpcCIDR:
     Description: The IP range (CIDR notation) for this VPC
