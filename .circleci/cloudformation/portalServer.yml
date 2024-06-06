@@ -49,6 +49,8 @@ Resources:
         - !Ref InstanceSecurityGroup
       KeyName: studentportal
       ImageId: ami-058bd2d568351da34
+      SubnetId: !ImportValue
+        "Fn::Sub": "${EnvironmentName}-PUB-NETS"
       Tags:
         - Key: Name
           Value: !Sub studentportalServer-${ID}
