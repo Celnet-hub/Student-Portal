@@ -46,7 +46,7 @@ Resources:
       VpcId: !ImportValue
         "Fn::Sub": "${EnvironmentName}-VPCID" 
       SecurityGroups:
-        - Ref: InstanceSecurityGroup
+        - !Ref InstanceSecurityGroup
       KeyName: studentportal
       ImageId: ami-058bd2d568351da34
       Tags:
