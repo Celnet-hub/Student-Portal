@@ -17,19 +17,19 @@ services:
     secrets:
       - db_pass
 
-  reactfrontend:
-    # build:
-    #   context: ./Frontend
-    #   dockerfile: Dockerfile
-    image: celnet1/studentportal-fe:lastest
-    ports:
-      - '3000:3000'
-    volumes:
-      - ./Frontend:/app/frontend
-    depends_on:
-      - pybackend
-    networks:
-      - portal-network
+  # reactfrontend:
+  #   # build:
+  #   #   context: ./Frontend
+  #   #   dockerfile: Dockerfile
+    # image: celnet1/studentportal-fe:lastest
+  #   ports:
+  #     - '3000:3000'
+  #   volumes:
+  #     - ./Frontend:/app/frontend
+  #   depends_on:
+  #     - pybackend
+  #   networks:
+  #     - portal-network
 
   pybackend: 
     build: 
