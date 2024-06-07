@@ -35,7 +35,7 @@ SECRET_KEY = 'django-insecure-3o#a#12*60@@blo082%-j2w2y=_qx59(v-^11wpdh*e7%m2-0#
 DEBUG = True
 
 #DEBUB = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','0.0.0.0']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -218,11 +218,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configuring CORS
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = (
-       'http://localhost:3001','https://lumistudentportal.herokuapp.com', 'http://localhost:3000', 'http://localhost:8000'
-)
+#CORS_ORIGIN_WHITELIST = ('http://35.153.231.123','http://*','http://localhost:3001','https://lumistudentportal.herokuapp.com', 'http://localhost:3000', 'http://localhost:8000')
 
 
 
