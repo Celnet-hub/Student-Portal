@@ -25,8 +25,8 @@ services:
     # image: celnet1/studentportal-fe:lastest
     ports:
       - '80:3000'
-    volumes:
-      - ./Frontend:/app/frontend
+    # volumes:
+    #   - ./Frontend:/app/frontend
     depends_on:
       - pybackend
     networks:
