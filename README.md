@@ -1,83 +1,91 @@
-# This project was built using two technologies:
-    * React (Front-End)
-    * Django (Bank-End)
+# Student Portal
 
-# Features of the Student Portal:
-* The student should have a Dashboard 
-* The student should be able to do the Registration: 
-    *  On the registration pages of students, it should show courses that are to be registered only by the students for that semester. Core courses, GST, electives and outstanding
-    * Using this illustration, 
-        * A 400L computer student registering for the first semester should not see lower-level courses that he/she has passed. He/she should only see the following:
-            * 400L core courses for the first semester 
-            * Outstanding GST courses for the first semester 
-            * 400L Electives for the first semester (if any) 
-            * Lower level cores courses that he/she hasn't passed
-* The student should be able to view the Result 
-* The student should be able to view Approved course registration 
-* The student should be able to view unapproved registered courses
-* The student should be able to edit unapproved registered courses
+A web application that provides students with a dashboard to register courses, view results, and manage course registration status. The project uses a React frontend and a Django backend.
 
-# Steps:
-Clone the github repository using the command below:
+- Frontend: React (Create React App)
+- Backend: Django (Python)
 
-`git clone https://github.com/Celnet-hub/Student-Portal.git` 
+## Key Features
 
-Change directory
+- Student dashboard with personalized information.
+- Course registration:
+  - Displays only the courses relevant to a student for the current semester (core courses, GST, electives, and outstanding courses).
+  - Hides lower-level courses that the student has already passed.
+  - Shows lower-level core courses that the student has not yet passed.
+- View academic results.
+- View approved and unapproved course registrations.
+- Edit unapproved course registrations.
 
-`cd Student-Portal`
+## Requirements
 
+- Node.js and npm (for frontend)
+- Python 3.8+ and pip (for backend)
+- virtualenv or venv for creating an isolated Python environment
 
-# Getting Started with Create React App (Project FrontEnd)
+## Quick Start
 
-Before starting make sure [Node](https://nodejs.org/en/download/) is installed in your local device.
+1. Clone the repository
+```bash
+git clone https://github.com/Celnet-hub/Student-Portal.git
+cd Student-Portal
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+2. Frontend (React)
+```bash
+# From the project root (where package.json is located)
+npm install
+npm start
+```
+Open http://localhost:3000 in your browser to view the frontend in development mode.
 
-## Available Scripts
+3. Backend (Django)
+```bash
+# Create and activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate   # Unix / macOS
+# On Windows: venv\Scripts\activate
 
-In the project directory, you can run:
+# Install Python dependencies
+pip install -r requirements.txt
 
-### `npm start`
+# Apply migrations and create a superuser
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Start the development server
+python manage.py runserver
+```
+The backend will run at http://localhost:8000 by default.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Configuration
 
-# Getting started with the Djanjo application (Project Backend)
+- Use environment variables or a .env file for sensitive settings (e.g., DATABASE_URL, SECRET_KEY).
+- Review `settings.py` (or your environment configuration) to confirm database settings, allowed hosts, and static files configuration for production.
 
-Before starting make sure that [python](https://www.python.org/downloads/) is installed in your local device.
+## Project Structure (high level)
 
-Create and activate a virtual environment for the application:
+- frontend/ or root — React application (if present at project root)
+- backend/ or project root — Django project files and apps
+- requirements.txt — Python dependencies
+- package.json — Node dependencies (frontend)
 
-`python3 -m venv ~/.backend`
+Adjust paths above if your project keeps frontend and backend in separate subdirectories.
 
-`source venv/bin/activate`
+## Development & Contribution
 
-Install dependencies 
+- Fork the repository and create a feature branch for your changes.
+- Make small, well-scoped commits with descriptive messages.
+- Open a pull request describing your change and any setup required to test it.
 
-`pip install -r requirements.txt`
+If you want, I can create a contributor guide, add templates for issues/PRs, or open a PR with this README update.
 
-Create a superuser for the admin. This user will be used to login to the admin portion of the application.
+## Resources
 
-`python manage.py createsuperuser` and follow the prompt.
+- Create React App: https://create-react-app.dev/
+- React: https://reactjs.org/
+- Django: https://www.djangoproject.com/
 
-`python manage.py makemigrations`
+## Contact
 
-`python manage.py migrate`
-
-`python manage.py runserver`
-
-The last command will start the python server on port 8000 on localhost
-`http://localhost:8000`
-
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-
-## More about [Django](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Introduction)
+For questions or support, open an issue in this repository or contact the maintainers listed on the project.
